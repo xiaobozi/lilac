@@ -1,6 +1,8 @@
 golb
 ----
 
+**Note**: Still not released, not stable.
+
 Not `gold` neither `glob`, `golb == reverse(blog)`
 
 Markdown&TOML based static blog for programmers with simple templates and plugin support.
@@ -70,6 +72,7 @@ git init
   ```
   title = "Hello World!"
   tags = ["tag1", "tag2"]  # tags
+  datetime = "2013-04-14 13:20"  # create at
   ----
   ## Hello World!
   ```
