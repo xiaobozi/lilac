@@ -25,6 +25,7 @@ from os.path import join as j
 from os import listdir as ls
 from os import makedirs as mkdir
 from os.path import exists
+from datetime import datetime
 from jinja2 import Environment, FileSystemLoader
 
 import signals
@@ -84,6 +85,8 @@ def get_posts():
         post.__dict__.update(dct)
         # cast
         post.tags = set(post.tags)
+        # cast datetime to python datetime object
+        post.datetime = datetime.strptime(post.datetime, "%Y-%m-%d %H:%M")
     return posts
 
 
@@ -103,7 +106,7 @@ def get_tags(posts):
 
 
 def sort_posts(posts):
-    posts.sort(key=lambda p: p.update_at.timetuple(), reverse=True)
+    posts.sort(key=lambda p: p.datetime.timetuple(), reverse=True)
     return posts
 
 

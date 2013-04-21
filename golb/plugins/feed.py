@@ -29,7 +29,7 @@ def gen_feed(runtime):
             content_type="html",
             author=conf["author"]["name"],
             url=conf["blog"]["url"]+"/"+post.out,
-            updated=post.update_at
+            updated=post.datetime
         )
 
     open("feed.atom", "w").write(feed.to_string().encode(charset))

@@ -4,8 +4,6 @@ from ._ import output as o
 from ._ import srcExt as se
 from ._ import outputExt as oe
 from os.path import join as j
-from os.path import getmtime
-from datetime import datetime
 
 
 class Post(object):
@@ -23,8 +21,6 @@ class Post(object):
         self.filename = filename
         self.src = j(Post.src_dir, self.name + se)  # source path
         self.out = j(Post.out_dir, self.name + oe)  # output path
-        # post's update time
-        self.update_at = datetime.fromtimestamp(getmtime(self.src))
 
 
 class Tag(object):
