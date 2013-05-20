@@ -51,7 +51,7 @@ def chunks(lst, number):
     """
     l = len(lst)
     for i in xrange(0, l, number):
-        yield l[i:i + number]
+        yield lst[i:i + number]
 
 
 def update_nested_dict(a, b):
