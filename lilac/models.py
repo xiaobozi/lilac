@@ -57,3 +57,43 @@ class Post(object):
             self.tags = []
         else:
             self.tags = tags
+
+
+class Tag(object):
+    """
+      Tag object.
+
+      Each post may belong to some tags, each tag has some posts.
+
+      attributes
+        name        unicode     tag's name
+        posts       list        posts in this tag
+    """
+
+    def __init__(self, name, posts=None):
+        self.name = name
+        if posts is None:
+            self.posts = []
+        else:
+            self.posts = posts
+
+
+class Page(object):
+    """
+      Page object.
+
+      attributes
+        number      int     the 1st, 2nd or 3rd page?
+        posts       list    the posts in this page
+        frist       bool    is this page the first page?
+        last        bool    is this page the last page?
+    """
+
+    def __init__(self, number, posts=None, first=False, last=False):
+        self.number = number
+        if posts is None:
+            self.posts = []
+        else:
+            self.posts = posts
+        self.first = first
+        self.last = last
