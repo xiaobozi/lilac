@@ -4,3 +4,4 @@ v0.2.0
 - conf.toml => config.toml
 - remove `url` from `config.blog`
 - Single page: tags,archives,about,index
+- remove plugin(blinker) support

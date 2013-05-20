@@ -12,13 +12,19 @@ class Blog(object):
       attributes
         name            unicode     this blog's name
         description     unicode     this blog's description
+        url             str         the url of your blog
         templates       str         which set of templates to use
+
+      Note: `url` should be a remote url, you needn't to change url back
+    to `localhost` to preview pages locally, this url is only used in feed
+    generation so far.
 
     """
 
-    def __init__(self, name, description, templates):
+    def __init__(self, name, description, url, templates):
         self.name = name
         self.description = description
+        self.url = url
         self.templates = templates
 
 
@@ -26,6 +32,7 @@ class Blog(object):
 blog = Blog(
     u"Follow my heart",
     u"Make difference.",
+    'http://your-domain.com',
     "classic"
 )
 
@@ -89,14 +96,14 @@ class Post(object):
 
         post.mysettings["setting"]
 
-    and touch it in jinja2 templates in this way(as jinja2 enable to get an item
-    of some dict like the way getting attributes)::
+    and touch it in jinja2 templates in this way(as jinja2 enable
+    to get an item of some dict like the way getting attributes)::
 
         post.mysettings.setting
 
     """
 
-    def  __init__(self, title, datetime, markdown, html, tags=None):
+    def __init__(self, title, datetime, markdown, html, tags=None):
         self.title = title
         self.datetime = datetime
         self.markdown = markdown

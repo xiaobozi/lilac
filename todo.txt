@@ -1,1 +1,1 @@
--     Add makefile to manage blog
+- [x] Add makefile to manage blog
