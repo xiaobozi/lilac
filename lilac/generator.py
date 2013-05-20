@@ -182,6 +182,34 @@ class Generator(object):
             open(out_path, "w").write(content.encode(charset))
         log.ok("Render posts ok")
 
+    def render_tags(self):
+        """render all tags with template"""
+        out_dir = join(self.out_dir, "tag")
+        if not exists(out_dir):
+            mkdir(out_dir)
+        for tag in self.tags:
+            r = self.render('tag.html', tag=tag)
+            out_path = join(out_dir, tag.name + self.out_ext)
+            open(out_path, "w").write(r.encode(charset))
+        out_path = join(self.out_dir, 'tags' + self.out_ext)
+        r = self.render('tags.html', tags=self.tags)
+        open(out_path, "w").write(r.encode(charset))
+        log.ok("Render tags ok.")
+
+    def render_pages(self):
+        """render all pages with template"""
+        out_dir = join(self.out_dir, "page")
+        if not exists(out_dir):
+            mkdir(out_dir)
+        for page in self.pages:
+            r = self.render("page.html", page=page)
+            if page.first:
+                out_path = join(self.out_dir, "index" + self.out_ext)
+            else:
+                out_path = join(out_dir, page.number + self.out_ext)
+            open(out_path, "w").write(r.encode(charset))
+        log.ok("Render pages ok.")
+
     def generate(self):
         """Generate posts, tags, all pages."""
         self.initialize()
@@ -189,6 +217,7 @@ class Generator(object):
         self.extract_tags()
         self.generate_pages()
         self.render_posts()
-
+        self.render_tags()
+        self.render_pages()
 
 generator = Generator()
