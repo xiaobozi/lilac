@@ -55,7 +55,6 @@ class Generator(object):
         self.author = Author()
         self.config = config.default
 
-
     def initialize(self):
         """Initialize config, blog, author and jinja2 env"""
         # read configuration to update config
@@ -106,7 +105,7 @@ class Generator(object):
             config=self.config
         )
         dct.update(data)
-        #TODO: add try except
+        # TODO: add try except
         return self.env.get_template(template).render(**dct)
 
     def parse_posts(self):
@@ -130,13 +129,16 @@ class Generator(object):
             except PostDateTimeNotFound:
                 log.error("datetime not found in post '%s'" % filepath)
             except PostDateTimeInvalid:
-                log.error("datetime type invalid in post '%s', should like '2013-04-05 10:10'" % filepath)
+                log.error(
+                    "datetime invalid in post '%s', e.g.'2013-04-05 10:10'" % filepath
+                )
             except PostTagsTypeInvalid:
                 log.error("tags should be array type in post '%s'" % filepath)
             else:
                 self.posts.append(post)
             # sort posts by its create time: from now to before
-        self.posts.sort(key=lambda post: post.datetime.timetuple(), reverse=True)
+        self.posts.sort(
+            key=lambda post: post.datetime.timetuple(), reverse=True)
         log.ok("Parse posts ok.")
 
     def extract_tags(self):
@@ -153,10 +155,21 @@ class Generator(object):
         self.tags.sort(key=lambda x: len(x.posts), reverse=True)
         log.ok("Exract tags from posts ok.")
 
+    def generate_pages(self):
+        """generate pages"""
+        groups = chunks(self.posts, 7)  # 7 posts per page
+        for index, group in enumerate(groups):
+            self.pages.append(Page(number=index + 1, posts=list(group)))
+        if self.pages:  # not empty
+            self.pages[0].first  = True
+            self.pages[-1].last = True
+        log.ok("Generate pages ok.")
+
     def generate(self):
         """Generate posts, tags, all pages."""
         self.initialize()
         self.parse_posts()
         self.extract_tags()
+        self.generate_pages()
 
 generator = Generator()

@@ -1,1 +1,4 @@
+lilac
+-----
 - [x] Add makefile to manage blog
+-     Need to check conf's vliadation?
