@@ -40,6 +40,7 @@
 
 """Name space shortcut"""
 
+from ._ import version
 from .config import config
 from .parser import parser
-from ._ import version
+from .generator import generator

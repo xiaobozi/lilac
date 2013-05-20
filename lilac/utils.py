@@ -35,3 +35,20 @@ class Log(object):
 
 
 log = Log()
+
+
+def chunks(lst, number):
+    """
+      A generator to split list `lst` into `number` equal size parts.
+
+      ::
+
+          lst = range(1, 9)
+          chunks(lst, 3)  # return a list each time
+                          # [1, 2, 3]
+                          # [4, 5, 6]
+                          # [7, 8]
+    """
+    l = len(lst)
+    for i in xrange(0, l, number):
+        yield l[i:i + number]

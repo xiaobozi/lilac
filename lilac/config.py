@@ -54,11 +54,11 @@ class Config(object):
 
     def read(self):
         """Read and parse config, return dict"""
+        if not os.path.exists(self.path):
+            # if './config.toml' not exists, touch it
+            open(self.path, "a").close()
         content = open(self.path).read().decode(charset)
-        dct = dict()
-        dct.update(self.default_conf)  # use default_conf
-        dct.update(toml.loads(content))
-        return dct
+        return toml.loads(content)
 
     def write(self, dct):
         """Write config to toml file from dict"""

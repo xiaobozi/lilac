@@ -21,7 +21,13 @@ class Blog(object):
 
     """
 
-    def __init__(self, name=None, description=None, url=None, templates=None):
+    def __init__(
+        self,
+        name='BlogName',
+        description='BlogDescription',
+        url='http://example.com',
+        templates='classic'
+    ):
         self.name = name
         self.description = description
         self.url = url
@@ -39,7 +45,7 @@ class Author(object):
 
     """
 
-    def __init__(self, name=None, email=None):
+    def __init__(self, name='me', email='me@some.com'):
         self.name = name
         self.email = email
 
@@ -83,7 +89,7 @@ class Post(object):
     and touch it in jinja2 templates in this way(as jinja2 enable
     to get an item of some dict like the way getting attributes)::
 
-        post.mysettings.setting
+        {{post.mysettings.setting}}
 
     """
 
