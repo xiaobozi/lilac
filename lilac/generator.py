@@ -18,6 +18,11 @@ from .models import Page
 from .config import config
 
 from .parser import parser
+from .parser import SeparatorNotFound
+from .parser import PostTitleNotFound
+from .parser import PostDateTimeNotFound
+from .parser import PostDateTimeInvalid
+from .parser import PostTagsTypeInvalid
 
 from .utils import chunks
 from .utils import log
@@ -26,6 +31,7 @@ from .utils import update_nested_dict
 from os import listdir as ls
 from os.path import join
 from os.path import exists
+from datetime import datetime
 from jinja2 import Environment
 from jinja2 import FileSystemLoader
 
@@ -104,7 +110,7 @@ class Generator(object):
         return self.env.get_template(template).render(**dct)
 
     def parse_posts(self):
-        """Get posts objects"""
+        """parse posts and sort them by create time"""
 
         src_dir = join(self.src_dir, "post")  # posts source directory
         template = "post.html"  # posts template
@@ -115,7 +121,23 @@ class Generator(object):
         # parse each post's content and append post instance to self.posts
         for filepath in paths:
             content = open(filepath).read().decode(charset)
-            self.posts.append(parser.parse_from(filepath))
+            try:
+                post = parser.parse_from(filepath)
+            except SeparatorNotFound:
+                log.error("separator not found in post '%s'" % filepath)
+            except PostTitleNotFound:
+                log.error("title not found in post '%s'" % filepath)
+            except PostDateTimeNotFound:
+                log.error("datetime not found in post '%s'" % filepath)
+            except PostDateTimeInvalid:
+                log.error("datetime type invalid in post '%s', should like '2013-04-05 10:10'" % filepath)
+            except PostTagsTypeInvalid:
+                log.error("tags should be array type in post '%s'" % filepath)
+            else:
+                self.posts.append(post)
+            # sort posts by its create time: from now to before
+        self.posts.sort(key=lambda post: post.datetime.timetuple(), reverse=True)
+        log.ok("Parse posts ok.")
 
 
 generator = Generator()
