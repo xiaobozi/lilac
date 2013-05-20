@@ -5,6 +5,54 @@
 """
 
 
+class Blog(object):
+    """
+      Blog should have only one instance.
+
+      attributes
+        name            unicode     this blog's name
+        description     unicode     this blog's description
+        templates       str         which set of templates to use
+
+    """
+
+    def __init__(self, name, description, templates):
+        self.name = name
+        self.description = description
+        self.templates = templates
+
+
+# build a default blog
+blog = Blog(
+    u"Follow my heart",
+    u"Make difference.",
+    "classic"
+)
+
+
+class Author(object):
+    """
+      The author of this blog.
+
+      attributes
+        name        unicode         your(the author) name
+        email       unicode(or str) your(the author) email
+      And the gravatar comes from this email.
+
+    """
+
+    def __init__(self, name, email):
+        self.name = name
+        self.email = email
+
+
+# build a default author
+author = Author(
+    "you",
+    "you@example.com"
+)
+
+
 class Post(object):
     """
       Post object.
