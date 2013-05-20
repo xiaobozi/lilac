@@ -7,7 +7,6 @@
 all models, and then render with jinja2, write to html files.
 """
 
-# import all models we need
 from .models import Blog
 from .models import Author
 from .models import Post
@@ -18,6 +17,7 @@ from .config import config
 
 from .utils import chunks
 from .utils import log
+from .utils import update_nested_dict
 
 from jinja2 import Environment
 from jinja2 import FileSystemLoader
@@ -40,23 +40,21 @@ class Generator(object):
         self.pages = []
         self.blog = Blog()
         self.author = Author()
-        self.config = config.default_conf
+        self.config = config.default
 
 
     def initialize(self):
         """Initialize config, blog, author and jinja2 env"""
         # read configuration to update config
-        conf = config.read()
-        self.config.update(conf)
+        update_nested_dict(self.config, config.read())
         # update blog and author from config
-        # pop blog and author from config
         self.blog.__dict__.update(self.config['blog'])
         self.author.__dict__.update(self.config['author'])
         # initialize jinja2 environment
         self.env = Environment(loader=FileSystemLoader(self.blog.templates))
         self.env.trim_blocks = True
 
-    def render(self, template, data):
+    def render(self, template, **data):
         """
             Render data with some template::
 
@@ -67,7 +65,6 @@ class Generator(object):
               data      dict data dict to render
 
             Configuration in config.toml will be append to the data.
-
             Any key in config.toml can be touched in templates::
 
                 [mysetting]
@@ -87,6 +84,8 @@ class Generator(object):
                 {{config.blog.name}}
                 {{config.author.email}}
 
+            config is indeed what in your config.toml
+
         """
         dct = dict(
             blog=self.blog,
@@ -94,6 +93,7 @@ class Generator(object):
             config=self.config
         )
         dct.update(data)
+        #TODO: add try except
         return self.env.get_template(template).render(**dct)
 
 

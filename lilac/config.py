@@ -39,7 +39,7 @@ class Config(object):
     filename = "config.toml"  # the
     path = os.path.join(".", filename)
 
-    default_conf = {
+    default = {
         'blog': {
             'name': 'BlogName',
             'description': 'BlogDescription',
@@ -64,5 +64,6 @@ class Config(object):
         """Write config to toml file from dict"""
         content = toml.dumps(dct)
         return open(self.path).write(content.encode(charset))
+
 
 config = Config()  # yes, build a config instance

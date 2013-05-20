@@ -52,3 +52,17 @@ def chunks(lst, number):
     l = len(lst)
     for i in xrange(0, l, number):
         yield l[i:i + number]
+
+
+def update_nested_dict(a, b):
+    """
+      Update nested dict recursivly
+    """
+
+    for k, v in b.items():
+        if isinstance(v, dict):
+            d = a.setdefault(k, {})
+            update_nested_dict(d, v)
+        else:
+            a[k] = v
+    return a
