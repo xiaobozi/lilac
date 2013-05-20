@@ -139,5 +139,24 @@ class Generator(object):
         self.posts.sort(key=lambda post: post.datetime.timetuple(), reverse=True)
         log.ok("Parse posts ok.")
 
+    def extract_tags(self):
+        """extract tags from posts, and sort them by posts' number"""
+        # traversal all posts and get the minial tag to posts dict
+        tags = dict()
+        for post in self.posts:
+            for tag in post.tags:
+                tags.setdefault(tag, []).append(post)
+        # initialize tags
+        for tag, posts in tags.iteritems():
+            self.tags.append(Tag(tag, posts))
+        # sort by count
+        self.tags.sort(key=lambda x: len(x.posts), reverse=True)
+        log.ok("Exract tags from posts ok.")
+
+    def generate(self):
+        """Generate posts, tags, all pages."""
+        self.initialize()
+        self.parse_posts()
+        self.extract_tags()
 
 generator = Generator()
