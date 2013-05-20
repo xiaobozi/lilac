@@ -8,6 +8,7 @@
       [blog]
       name = "blog-name"
       description = "Make difference."
+      url = "http://example.com"
       templates = "classic"
       [author]
       name = "hit9"
@@ -47,6 +48,7 @@ class Config(object):
         """Write config to toml file from dict"""
         content = toml.dumps(dct)
         return open(self.path).write(content.encode(charset))
+# TODO: Add checker
 
 
 config = Config()  # yes, build a config instance

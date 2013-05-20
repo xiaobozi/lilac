@@ -21,20 +21,17 @@ class Blog(object):
 
     """
 
-    def __init__(self, name, description, url, templates):
+    def __init__(
+        self,
+        name='Blog\'s name',
+        description='Blog\'s description',
+        url='http://your-domain.com',
+        templates='classic'
+    ):
         self.name = name
         self.description = description
         self.url = url
         self.templates = templates
-
-
-# build a default blog
-blog = Blog(
-    u"Follow my heart",
-    u"Make difference.",
-    'http://your-domain.com',
-    "classic"
-)
 
 
 class Author(object):
@@ -48,16 +45,9 @@ class Author(object):
 
     """
 
-    def __init__(self, name, email):
+    def __init__(self, name='your name', email='you@some.com'):
         self.name = name
         self.email = email
-
-
-# build a default author
-author = Author(
-    "you",
-    "you@example.com"
-)
 
 
 class Post(object):
