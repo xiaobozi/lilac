@@ -75,6 +75,7 @@ class Parser(object):
 
           parser = Parser()
           parser.parse(str)  # return post instance
+          parser.parse_from(filepath)  # parse from filepath
     """
 
     separator = '---'  # separator between toml head and markdown body.
@@ -139,6 +140,14 @@ class Parser(object):
         post = Post(title, date_time, markdown, html, tags=tags)
         # append k, v to post's attributes
         post.__dict__.update(**dct)
+        return post
+
+    def parse_from(self, filepath):
+        """
+          Parse from filepath, and add an attribute `src` to parsed post
+        """
+        post = self.parse(open(filepath).read().decode(charset))
+        post.src = filepath
         return post
 
 
