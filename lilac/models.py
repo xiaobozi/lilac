@@ -54,7 +54,7 @@ class Post(object):
         title       unicode     post's title
         datetime    datetime    post's create time
         tags        list        post's tags
-        src         unicode     post's source file's path
+        name        str         filename without exitension
         ..          these attributes are from key-to-value dict
       from head(which is in toml)
 
@@ -88,12 +88,12 @@ class Post(object):
 
     """
 
-    def __init__(self, title, datetime, markdown, html, tags=None, src=None):
+    def __init__(self, title, datetime, markdown, html, tags=None, name=None):
         self.title = title
         self.datetime = datetime
         self.markdown = markdown
         self.html = html
-        self.src = src
+        self.name = name
         if tags is None:
             self.tags = []
         else:

@@ -144,11 +144,9 @@ class Parser(object):
 
     def parse_from(self, filepath):
         """
-          Parse from filepath, and add an attribute `src` to parsed post
+          Parse from filepath
         """
-        post = self.parse(open(filepath).read().decode(charset))
-        post.src = filepath
-        return post
+        return self.parse(open(filepath).read().decode(charset))
 
 
 parser = Parser()

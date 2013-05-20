@@ -31,9 +31,11 @@ from .utils import update_nested_dict
 from os import listdir as ls
 from os.path import join
 from os.path import exists
+from os import makedirs as mkdir
 from datetime import datetime
 from jinja2 import Environment
 from jinja2 import FileSystemLoader
+from jinja2.exceptions import TemplateNotFound
 
 
 class Generator(object):
@@ -105,8 +107,12 @@ class Generator(object):
             config=self.config
         )
         dct.update(data)
-        # TODO: add try except
-        return self.env.get_template(template).render(**dct)
+        try:
+            re = self.env.get_template(template).render(**dct)
+        except TemplateNotFound:
+            log.error("Template '%s' not found in directory '%s'" % (template, self.blog.templates))
+        else:
+            return re
 
     def parse_posts(self):
         """parse posts and sort them by create time"""
@@ -115,10 +121,9 @@ class Generator(object):
         template = "post.html"  # posts template
         # get all post's filename
         files = [fn for fn in ls(src_dir) if fn.endswith(self.src_ext)]
-        # get files' full path
-        paths = [join(src_dir, fn) for fn in files]
         # parse each post's content and append post instance to self.posts
-        for filepath in paths:
+        for fn in files:
+            filepath = join(src_dir, fn)  # source file full path
             content = open(filepath).read().decode(charset)
             try:
                 post = parser.parse_from(filepath)
@@ -135,6 +140,7 @@ class Generator(object):
             except PostTagsTypeInvalid:
                 log.error("tags should be array type in post '%s'" % filepath)
             else:
+                post.name = fn[:-3]  # set its name attribute
                 self.posts.append(post)
             # sort posts by its create time: from now to before
         self.posts.sort(
@@ -165,11 +171,24 @@ class Generator(object):
             self.pages[-1].last = True
         log.ok("Generate pages ok.")
 
+    def render_posts(self):
+        """render all posts with template"""
+        out_dir = join(self.out_dir, "post")
+        if not exists(out_dir):
+            mkdir(out_dir)
+        for post in self.posts:
+            content = self.render("post.html", post=post)
+            out_path = join(out_dir, post.name + self.out_ext)
+            open(out_path, "w").write(content.encode(charset))
+        log.ok("Render posts ok")
+
     def generate(self):
         """Generate posts, tags, all pages."""
         self.initialize()
         self.parse_posts()
         self.extract_tags()
         self.generate_pages()
+        self.render_posts()
+
 
 generator = Generator()
