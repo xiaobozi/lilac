@@ -7,6 +7,8 @@
 all models, and then render with jinja2, write to html files.
 """
 
+from ._ import charset
+
 from .models import Blog
 from .models import Author
 from .models import Post
@@ -15,10 +17,15 @@ from .models import Page
 
 from .config import config
 
+from .parser import parser
+
 from .utils import chunks
 from .utils import log
 from .utils import update_nested_dict
 
+from os import listdir as ls
+from os.path import join
+from os.path import exists
 from jinja2 import Environment
 from jinja2 import FileSystemLoader
 
@@ -95,6 +102,20 @@ class Generator(object):
         dct.update(data)
         #TODO: add try except
         return self.env.get_template(template).render(**dct)
+
+    def parse_posts(self):
+        """Get posts objects"""
+
+        src_dir = join(self.src_dir, "post")  # posts source directory
+        template = "post.html"  # posts template
+        # get all post's filename
+        files = [fn for fn in ls(src_dir) if fn.endswith(self.src_ext)]
+        # get files' full path
+        paths = [join(src_dir, fn) for fn in files]
+        # parse each post's content and append post instance to self.posts
+        for filepath in paths:
+            content = open(filepath).read().decode(charset)
+            self.posts.append(parser.parse_from(filepath))
 
 
 generator = Generator()

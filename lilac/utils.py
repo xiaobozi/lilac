@@ -59,7 +59,7 @@ def update_nested_dict(a, b):
       Update nested dict recursivly
     """
 
-    for k, v in b.items():
+    for k, v in b.iteritems():
         if isinstance(v, dict):
             d = a.setdefault(k, {})
             update_nested_dict(d, v)
