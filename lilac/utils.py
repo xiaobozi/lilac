@@ -18,7 +18,7 @@ class Log(object):
 
     def error(self, message):
         """Error message in red, kill the sys"""
-        print colored("red", "[error]" + message)
+        print colored("[error]\t" + message, "red")
         sys.exit(1)
 
     def info(self, message):
