@@ -112,6 +112,7 @@ class Generator(object):
         except TemplateNotFound:
             log.error("Template '%s' not found in directory '%s'" % (template, self.blog.templates))
         else:
+            # TODO: return encode string?
             return re
 
     def parse_posts(self):
