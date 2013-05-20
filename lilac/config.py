@@ -39,16 +39,30 @@ class Config(object):
     filename = "config.toml"  # the
     path = os.path.join(".", filename)
 
+    default_conf = {
+        'blog': {
+            'name': 'BlogName',
+            'description': 'BlogDescription',
+            'url': 'http://domain.com',
+            'templates': 'classic'
+        },
+        'author': {
+            'name': 'me',
+            'email': 'me@some.com'
+        }
+    }
+
     def read(self):
         """Read and parse config, return dict"""
         content = open(self.path).read().decode(charset)
-        return toml.loads(content)
+        dct = dict()
+        dct.update(self.default_conf)  # use default_conf
+        dct.update(toml.loads(content))
+        return dct
 
     def write(self, dct):
         """Write config to toml file from dict"""
         content = toml.dumps(dct)
         return open(self.path).write(content.encode(charset))
-# TODO: Add checker
-
 
 config = Config()  # yes, build a config instance
