@@ -268,6 +268,11 @@ class Generator(object):
         open("feed.atom", "w").write(self.feed.to_string().encode(charset))
         log.ok("Generate feed.atom ok.")
 
+    def render_404(self):
+        """4o4"""
+        self.render_to(join(self.out_dir, "404"+self.out_ext), "404.html")
+        log.ok("render 404.html ok")
+
     def generate(self):
         """Generate posts, tags, all pages."""
         self.initialize()
@@ -279,6 +284,7 @@ class Generator(object):
         self.render_pages()
         self.render_about_page()
         self.render_archives()
+        self.render_404()
         self.generate_feed()
 
 generator = Generator()

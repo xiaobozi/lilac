@@ -1,0 +1,11 @@
+# Configuration for this blog
+
+[blog]
+name = "BlogName"  # What is your blog's name?
+description = "BlogDescription"  # What is your blog about?
+url = "http://your-blog.org"  # your blog's url, if you don't have one,  leave here blank
+templates = "classic"  # where are the templates?
+
+[author]
+name = "me"  # better be your github's username
+email = "me@some.com"  # your email address

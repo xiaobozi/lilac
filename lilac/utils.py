@@ -66,3 +66,8 @@ def update_nested_dict(a, b):
         else:
             a[k] = v
     return a
+
+
+def _call(cmds):
+    log.info(" ".join(cmds))
+    return call(cmds)
