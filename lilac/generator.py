@@ -72,8 +72,6 @@ class Generator(object):
         """
             Render data with some template::
 
-                generator.render(template, data)
-
             parameters
               template  str  the filename of some template in templates folder
               data      dict data dict to render
@@ -112,10 +110,12 @@ class Generator(object):
         except TemplateNotFound:
             log.error("Template '%s' not found in directory '%s'" % (template, self.blog.templates))
         else:
-            # TODO: return encode string?
             return re
 
-    # TODO: Add render to method?
+    def render_to(self, path, template, **data):
+        """render data with template, write to path"""
+        r = self.render(template, **data)
+        return open(path, "w").write(r.encode(charset))
 
     def parse_posts(self):
         """parse posts and sort them by create time"""
@@ -180,9 +180,8 @@ class Generator(object):
         if not exists(out_dir):
             mkdir(out_dir)
         for post in self.posts:
-            content = self.render("post.html", post=post)
             out_path = join(out_dir, post.name + self.out_ext)
-            open(out_path, "w").write(content.encode(charset))
+            self.render_to(out_path, "post.html", post=post)
         log.ok("Render posts ok")
 
     def render_tags(self):
@@ -191,12 +190,10 @@ class Generator(object):
         if not exists(out_dir):
             mkdir(out_dir)
         for tag in self.tags:
-            r = self.render('tag.html', tag=tag)
             out_path = join(out_dir, tag.name + self.out_ext)
-            open(out_path, "w").write(r.encode(charset))
+            self.render_to(out_path, "tag.html", tag=tag)
         out_path = join(self.out_dir, 'tags' + self.out_ext)
-        r = self.render('tags.html', tags=self.tags)
-        open(out_path, "w").write(r.encode(charset))
+        self.render_to(out_path, "tags.html", tags=self.tags)
         log.ok("Render tags ok.")
 
     def render_pages(self):
@@ -205,19 +202,17 @@ class Generator(object):
         if not exists(out_dir):
             mkdir(out_dir)
         for page in self.pages:
-            r = self.render("page.html", page=page)
             if page.first:
                 out_path = join(self.out_dir, "index" + self.out_ext)
             else:
                 out_path = join(out_dir, page.number + self.out_ext)
-            open(out_path, "w").write(r.encode(charset))
+            self.render_to(out_path, "page.html", page=page)
         log.ok("Render pages ok.")
 
     def render_archives(self):
         """render archives page"""
         out_path = join(self.out_dir, "archives" + self.out_ext)
-        r = self.render("archives.html", posts=self.posts)
-        open(out_path, "w").write(r.encode(charset))
+        self.render_to(out_path, "archives.html", posts=self.posts)
         log.ok("Render archives ok.")
 
 
