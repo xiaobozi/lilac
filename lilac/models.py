@@ -4,6 +4,8 @@
   models in lilac.
 """
 
+from hashlib import md5
+
 
 class Blog(object):
     """
@@ -35,6 +37,7 @@ class Author(object):
       attributes
         name        unicode         your(the author) name
         email       unicode(or str) your(the author) email
+        gravatar_id str             gravatar_id generated from email
       And the gravatar comes from this email.
 
     """
@@ -42,6 +45,10 @@ class Author(object):
     def __init__(self, name=None, email=None):
         self.name = name
         self.email = email
+
+    @property
+    def gravatar_id(self):
+        return md5(self.email).hexdigest()
 
 
 class Post(object):
@@ -138,3 +145,20 @@ class Page(object):
             self.posts = posts
         self.first = first
         self.last = last
+
+
+class About(object):
+    """
+      AboutMe object
+
+      attributes
+        html        its content's rendered production
+        markdown    its content
+
+      The source `src/about.md` would be rendered to `about.html`.
+    and, `about` has no toml header, but only body in markdown.
+    """
+
+    def __init__(self, markdown=None, html=None):
+        self.markdown = markdown
+        self.html = html

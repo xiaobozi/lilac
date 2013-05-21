@@ -14,6 +14,7 @@ from .models import Author
 from .models import Post
 from .models import Tag
 from .models import Page
+from .models import About
 
 from .config import config
 
@@ -33,6 +34,7 @@ from os.path import join
 from os.path import exists
 from os import makedirs as mkdir
 from datetime import datetime
+from pyatom import AtomFeed
 from jinja2 import Environment
 from jinja2 import FileSystemLoader
 from jinja2.exceptions import TemplateNotFound
@@ -53,6 +55,7 @@ class Generator(object):
         self.posts = []
         self.tags = []
         self.pages = []
+        self.about = About()
         self.blog = Blog()
         self.author = Author()
         self.config = config.default
@@ -67,6 +70,14 @@ class Generator(object):
         # initialize jinja2 environment
         self.env = Environment(loader=FileSystemLoader(self.blog.templates))
         self.env.trim_blocks = True
+        # initialize feed
+        self.feed = AtomFeed(
+            title=self.blog.name,
+            subtitle=self.blog.description,
+            feed_url=self.blog.url+"/feed.atom",
+            url=self.blog.url,
+            author=self.author.name
+        )
 
     def render(self, template, **data):
         """
@@ -143,7 +154,7 @@ class Generator(object):
             except PostTagsTypeInvalid:
                 log.error("tags should be array type in post '%s'" % filepath)
             else:
-                post.name = fn[:-3]  # set its name attribute
+                post.name = fn[:-3]  # set it a name attribute
                 self.posts.append(post)
             # sort posts by its create time: from now to before
         self.posts.sort(
@@ -198,6 +209,10 @@ class Generator(object):
 
     def render_pages(self):
         """render all pages with template"""
+        # set attribute `summary` to each post
+        for post in self.posts:
+            setattr(post, "summary", parser.markdown.render(post.markdown[:255]))
+        # start render..
         out_dir = join(self.out_dir, "page")
         if not exists(out_dir):
             mkdir(out_dir)
@@ -215,6 +230,43 @@ class Generator(object):
         self.render_to(out_path, "archives.html", posts=self.posts)
         log.ok("Render archives ok.")
 
+    def render_about_page(self):
+        """
+          render about me page.
+
+          attributes
+            html        rendered about.md's markdown's html production
+
+          About page has no toml header neither no separator, only markdown.
+
+        """
+        src = join(self.src_dir, "about" + self.src_ext)
+        if exists(src):
+            content = open(src).read().decode(charset)
+            self.about.markdown = content
+        else:
+            self.about.markdown = ''
+        self.about.html = parser.markdown.render(self.about.markdown)
+        out = join(self.out_dir, "about"+self.out_ext)
+        self.render_to(out, "about.html", about=self.about)
+        log.ok("Render about page ok.")
+
+    def generate_feed(self):
+        """
+          generate feed of first 10 posts.
+        """
+        for post in self.posts[:10]:
+            self.feed.add(
+                title=post.title,
+                content=post.html,
+                content_type="html",
+                author=self.author.name,
+                url=self.blog.url+"/post/"+post.name+self.out_ext,
+                updated=post.datetime
+            )
+        # write to /feed.atom
+        open("feed.atom", "w").write(self.feed.to_string().encode(charset))
+        log.ok("Generate feed.atom ok.")
 
     def generate(self):
         """Generate posts, tags, all pages."""
@@ -225,6 +277,8 @@ class Generator(object):
         self.render_posts()
         self.render_tags()
         self.render_pages()
+        self.render_about_page()
         self.render_archives()
+        self.generate_feed()
 
 generator = Generator()
