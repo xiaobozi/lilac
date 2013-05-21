@@ -18,20 +18,20 @@ class Log(object):
 
     def error(self, message):
         """Error message in red, kill the sys"""
-        print colored("[error]\t" + message, "red")
+        print colored(message, "red")
         sys.exit(1)
 
     def info(self, message):
         """Print message"""
-        print '[info] ' + message
+        print message
 
     def ok(self, message):
         """Tell the user the success message"""
-        print colored("[ok]\t" + message, "green")
+        print colored(message, "green")
 
     def warn(self, message):
         """Warning message"""
-        print colored("[warn]\t" + message, "yellow")
+        print colored(message, "yellow")
 
 
 log = Log()

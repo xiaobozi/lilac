@@ -115,6 +115,8 @@ class Generator(object):
             # TODO: return encode string?
             return re
 
+    # TODO: Add render to method?
+
     def parse_posts(self):
         """parse posts and sort them by create time"""
 
@@ -211,6 +213,14 @@ class Generator(object):
             open(out_path, "w").write(r.encode(charset))
         log.ok("Render pages ok.")
 
+    def render_archives(self):
+        """render archives page"""
+        out_path = join(self.out_dir, "archives" + self.out_ext)
+        r = self.render("archives.html", posts=self.posts)
+        open(out_path, "w").write(r.encode(charset))
+        log.ok("Render archives ok.")
+
+
     def generate(self):
         """Generate posts, tags, all pages."""
         self.initialize()
@@ -220,5 +230,6 @@ class Generator(object):
         self.render_posts()
         self.render_tags()
         self.render_pages()
+        self.render_archives()
 
 generator = Generator()
