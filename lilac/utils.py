@@ -2,15 +2,10 @@
 
 """
   Utils for lilac: colored output, log etc.
-
-  colored("red", "this is text")
-  log.error(text), log.info(text), log.warn(text), log.ok(text)
-  call(['ls', '-a'])   # call `ls -a` in a subprocess, return exit_code
 """
 
 import sys
 from termcolor import colored
-from subprocess import call
 
 
 class Log(object):
@@ -66,8 +61,3 @@ def update_nested_dict(a, b):
         else:
             a[k] = v
     return a
-
-
-def _call(cmds):
-    log.info(" ".join(cmds))
-    return call(cmds)

@@ -21,7 +21,7 @@ Commands:
 
 from ._ import version
 from .generator import generator
-from .utils import _call
+from subprocess import call
 from .utils import log
 from docopt import docopt
 
@@ -36,12 +36,13 @@ def deploy():
     classic = os.path.join(res, "classic")
     sample_post = os.path.join(res, "sample.md")
     sample_config = os.path.join(res, "config.toml")
-
-    _call(["mkdir", "-p", "src/post"])
-    _call(["touch", "src/about.md"])
-    _call(["cp", sample_post, "src/post/helloworld.md"])
-    _call(["cp", sample_config, "."])
-    _call(["cp", "-r", classic, "."])
+    makefile_path = os.path.join(res, "Makefile")
+    call(["mkdir", "-p", "src/post"])
+    call(["touch", "src/about.md"])
+    call(["cp", sample_post, "src/post/helloworld.md"])
+    call(["cp", sample_config, "."])
+    call(["cp", "-r", classic, "."])
+    call(["cp", makefile_path, "."])
     log.ok("Deployment complete.")
     log.info("Please edit config.toml.")
 
@@ -60,7 +61,8 @@ def clean():
     ]
 
     cmd = ["rm", "-rf"] + paths
-    exit_code = _call(cmd)
+    log.info(" ".join(cmd))
+    exit_code = call(cmd)
     if exit_code == 0:
         log.ok("Clean done.")
 
