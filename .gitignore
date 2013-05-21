@@ -9,5 +9,4 @@ lilac.egg-info/
 testing
 venv/
 test.py
-sample.md
 tests/
