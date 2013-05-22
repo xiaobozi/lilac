@@ -1,6 +1,5 @@
 # coding=utf8
-# This is the application script also the\
-# cli interface.
+# This is the application script also the cli interface.
 
 """
 Usage:
@@ -21,8 +20,8 @@ Commands:
 
 from ._ import version
 from .generator import generator
-from subprocess import call
 from .utils import log
+from subprocess import call
 from docopt import docopt
 
 import os
@@ -43,8 +42,8 @@ def deploy():
     call(["cp", sample_config, "."])
     call(["cp", "-r", classic, "."])
     call(["cp", makefile_path, "."])
-    log.ok("Deployment complete.")
-    log.info("Please edit config.toml.")
+    log.ok("Deployment complete")
+    log.info("Please edit config.toml")
 
 
 def clean():
@@ -64,7 +63,7 @@ def clean():
     log.info(" ".join(cmd))
     exit_code = call(cmd)
     if exit_code == 0:
-        log.ok("Clean done.")
+        log.ok("Clean done")
 
 
 def generate():
@@ -81,5 +80,5 @@ def main():
     if dct['clean']:
         task = clean
     if dct['generate']:
-        task  = generate
+        task = generate
     task()

@@ -25,8 +25,8 @@ import toml
 
 class Config(object):
     """
-      Config manager, all configuration is stored in `config.toml` in
-    TOML. To manage it::
+      Config manager, configuration is in TOML, stored in `config.toml`
+    , to manage it::
 
         config = Config()
         config.read()  # return dict

@@ -2,7 +2,6 @@
 
 """
   Generator from source to html.
-
   This is the processor when lilac building: read config, initialize
 all models, and then render with jinja2, write to html files.
 """
@@ -41,9 +40,6 @@ from jinja2.exceptions import TemplateNotFound
 
 
 class Generator(object):
-    """
-      Generator for lilac.
-    """
 
     src_ext = ".md"  # source filename extention
     out_ext = ".html"  # output filename extention
@@ -82,28 +78,20 @@ class Generator(object):
     def render(self, template, **data):
         """
           Render data with template, return html unicode.
-
           parameters
             template  str  the filename of some template in templates folder
             data      dict data dict to render
           Any key in config.toml can be touched in templates::
-
               [mysetting]
               setting = 'xxx'
-
           in the template side::
-
               {{config.mysetting.setting}}
-
           but you can touch `blog` or `author` more quick::
-
                 {{blog.name}}
                 {{author, email}}
           than this way::
-
                 {{config.blog.name}}
                 {{config.author.email}}
-
           config is indeed what in your config.toml.
         """
         dct = dict(
