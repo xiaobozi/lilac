@@ -25,8 +25,9 @@ from .parser import PostDateTimeInvalid
 from .parser import PostTagsTypeInvalid
 
 from .utils import chunks
-from .utils import log
+from .utils import logger
 from .utils import update_nested_dict
+from .utils import progress_logger
 
 from os import listdir as ls
 from os.path import join
@@ -57,7 +58,7 @@ class Generator(object):
         self.config = config.default
 
     def initialize(self):
-        """Initialize config, blog, author and jinja2 env"""
+        """Initialize config, blog, author and jinja2 environment"""
         # read configuration to update config
         update_nested_dict(self.config, config.read())
         # update blog and author from config
@@ -103,7 +104,7 @@ class Generator(object):
         try:
             re = self.env.get_template(template).render(**dct)
         except TemplateNotFound:
-            log.error("Template '%s' not found in directory '%s'" % (template, self.blog.templates))
+            logger.error("Template '%s' not found in directory '%s'" % (template, self.blog.templates))
         else:
             return re
 
@@ -113,7 +114,7 @@ class Generator(object):
         return open(path, "w").write(r.encode(charset))
 
     def parse_posts(self):
-        """parse posts and sort them by create time"""
+        """Parse posts and sort them by create time"""
 
         src_dir = join(self.src_dir, "post")  # posts source directory
         template = "post.html"  # posts template
@@ -126,61 +127,59 @@ class Generator(object):
             try:
                 post = parser.parse_from(filepath)
             except SeparatorNotFound:
-                log.error("separator not found in post '%s'" % filepath)
+                logger.error("separator not found in post '%s'" % filepath)
             except PostTitleNotFound:
-                log.error("title not found in post '%s'" % filepath)
+                logger.error("title not found in post '%s'" % filepath)
             except PostDateTimeNotFound:
-                log.error("datetime not found in post '%s'" % filepath)
+                logger.error("datetime not found in post '%s'" % filepath)
             except PostDateTimeInvalid:
-                log.error(
+                logger.error(
                     "datetime invalid in post '%s', e.g.'2013-04-05 10:10'" % filepath
                 )
             except PostTagsTypeInvalid:
-                log.error("tags should be array type in post '%s'" % filepath)
+                logger.error("tags should be array type in post '%s'" % filepath)
             else:
                 post.name = fn[:-3]  # set it a name attribute
                 self.posts.append(post)
-            # sort posts by its create time: from now to before
+        # sort posts by its create time: from now to before
         self.posts.sort(
             key=lambda post: post.datetime.timetuple(), reverse=True)
-        log.ok("Parse posts ok.")
 
     def extract_tags(self):
-        """extract tags from posts, and sort them by posts' number"""
+        """Extract tags from posts, and sort by their posts' amount"""
         # traversal all posts and get the minial tag to posts dict
         tags = dict()
         for post in self.posts:
             for tag in post.tags:
                 tags.setdefault(tag, []).append(post)
+
         # initialize tags
         for tag, posts in tags.iteritems():
             self.tags.append(Tag(tag, posts))
         # sort by count
         self.tags.sort(key=lambda x: len(x.posts), reverse=True)
-        log.ok("Exract tags from posts ok.")
 
     def generate_pages(self):
-        """generate pages"""
+        """Generate pages from posts"""
         groups = chunks(self.posts, 7)  # 7 posts per page
         for index, group in enumerate(groups):
             self.pages.append(Page(number=index + 1, posts=list(group)))
         if self.pages:  # not empty
             self.pages[0].first  = True
             self.pages[-1].last = True
-        log.ok("Generate pages ok.")
+
 
     def render_posts(self):
-        """render all posts with template"""
+        """Render all posts to 'post/' with template 'post.html'"""
         out_dir = join(self.out_dir, "post")
         if not exists(out_dir):
             mkdir(out_dir)
         for post in self.posts:
             out_path = join(out_dir, post.name + self.out_ext)
             self.render_to(out_path, "post.html", post=post)
-        log.ok("Render posts ok")
 
     def render_tags(self):
-        """render all tags with template"""
+        """Render all tags to 'tag/' with template 'tags.html'"""
         out_dir = join(self.out_dir, "tag")
         if not exists(out_dir):
             mkdir(out_dir)
@@ -189,10 +188,9 @@ class Generator(object):
             self.render_to(out_path, "tag.html", tag=tag)
         out_path = join(self.out_dir, 'tags' + self.out_ext)
         self.render_to(out_path, "tags.html", tags=self.tags)
-        log.ok("Render tags ok.")
 
     def render_pages(self):
-        """render all pages with template"""
+        """Render all pages to 'page/' with template 'page.html'"""
         # set attribute `summary` to each post
         for post in self.posts:
             setattr(post, "summary", parser.markdown.render(post.markdown[:255]))
@@ -204,18 +202,16 @@ class Generator(object):
             if page.first:
                 out_path = join(self.out_dir, "index" + self.out_ext)
             else:
-                out_path = join(out_dir, page.number + self.out_ext)
+                out_path = join(out_dir, str(page.number) + self.out_ext)
             self.render_to(out_path, "page.html", page=page)
-        log.ok("Render pages ok.")
 
     def render_archives(self):
-        """render archives page"""
+        """Render archives page to 'archives.html' with template 'archives.html'"""
         out_path = join(self.out_dir, "archives" + self.out_ext)
         self.render_to(out_path, "archives.html", posts=self.posts)
-        log.ok("Render archives ok.")
 
     def render_about_page(self):
-        """render about me page"""
+        """Render about me page to 'about.html' with template 'about.html'"""
         src = join(self.src_dir, "about" + self.src_ext)
         if exists(src):
             content = open(src).read().decode(charset)
@@ -225,10 +221,9 @@ class Generator(object):
         self.about.html = parser.markdown.render(self.about.markdown)
         out = join(self.out_dir, "about"+self.out_ext)
         self.render_to(out, "about.html", about=self.about)
-        log.ok("Render about page ok.")
 
     def generate_feed(self):
-        """generate feed of first 10 posts"""
+        """Generate feed for first 10 posts to 'feed.atom'"""
         for post in self.posts[:10]:
             self.feed.add(
                 title=post.title,
@@ -240,25 +235,29 @@ class Generator(object):
             )
         # write to /feed.atom
         open("feed.atom", "w").write(self.feed.to_string().encode(charset))
-        log.ok("Generate feed.atom ok.")
 
     def render_404(self):
-        """404 page"""
+        """Generate 404 page to '404.html'"""
         self.render_to(join(self.out_dir, "404"+self.out_ext), "404.html")
-        log.ok("render 404.html ok")
 
     def generate(self):
         """Generate posts, tags, all pages."""
-        self.initialize()
-        self.parse_posts()
-        self.extract_tags()
-        self.generate_pages()
-        self.render_posts()
-        self.render_tags()
-        self.render_pages()
-        self.render_about_page()
-        self.render_archives()
-        self.render_404()
-        self.generate_feed()
+        steps = [
+            self.initialize,
+            self.parse_posts,
+            self.extract_tags,
+            self.generate_pages,
+            self.render_posts,
+            self.render_tags,
+            self.render_pages,
+            self.render_about_page,
+            self.render_archives,
+            self.render_404,
+            self.generate_feed,
+        ]
+
+        for step in steps:
+            with progress_logger.reset(step.__doc__):
+                step()
 
 generator = Generator()

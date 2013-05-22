@@ -8,7 +8,7 @@ import sys
 from termcolor import colored
 
 
-class Log(object):
+class Logger(object):
     """logging message to screen"""
 
     def error(self, message):
@@ -28,8 +28,45 @@ class Log(object):
         """Warning message"""
         print colored(message, "yellow")
 
+logger = Logger()
 
-log = Log()
+
+class ProgressLogger(object):
+
+    def __init__(self, description=''):
+        self.reset(description)
+
+    def reset(self, description):
+        self.description = description
+        self.done = False
+        return self
+
+    @property
+    def text(self):
+        if self.done:
+            state = "[done]"
+            color = "green"
+        else:
+            state = "[....]"
+            color = "yellow"
+        return colored(state, color) + "  " + self.description
+
+    def __enter__(self):
+        sys.stdout.write(self.text)
+        sys.stdout.flush()
+
+    def __exit__(self, type, value, traceback):
+        # clean this line
+        sys.stdout.write("\r%s" % ' '* len(self.text))
+        # back to left
+        sys.stdout.write("\r")
+        self.done = True
+        sys.stdout.write(self.text)
+        sys.stdout.write("\n")
+        sys.stdout.flush()
+
+
+progress_logger = ProgressLogger()
 
 
 def chunks(lst, number):

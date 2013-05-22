@@ -20,7 +20,7 @@ Commands:
 
 from ._ import version
 from .generator import generator
-from .utils import log
+from .utils import logger
 from subprocess import call
 from docopt import docopt
 
@@ -42,8 +42,8 @@ def deploy():
     call(["cp", sample_config, "."])
     call(["cp", "-r", classic, "."])
     call(["cp", makefile_path, "."])
-    log.ok("Deployment complete")
-    log.info("Please edit config.toml")
+    logger.ok("Deployment complete")
+    logger.info("Please edit config.toml")
 
 
 def clean():
@@ -60,10 +60,10 @@ def clean():
     ]
 
     cmd = ["rm", "-rf"] + paths
-    log.info(" ".join(cmd))
+    logger.info(" ".join(cmd))
     exit_code = call(cmd)
     if exit_code == 0:
-        log.ok("Clean done")
+        logger.ok("Clean done")
 
 
 def generate():
