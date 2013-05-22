@@ -81,34 +81,30 @@ class Generator(object):
 
     def render(self, template, **data):
         """
-            Render data with some template::
+          Render data with template, return html unicode.
 
-            parameters
-              template  str  the filename of some template in templates folder
-              data      dict data dict to render
+          parameters
+            template  str  the filename of some template in templates folder
+            data      dict data dict to render
+          Any key in config.toml can be touched in templates::
 
-            Configuration in config.toml will be append to the data.
-            Any key in config.toml can be touched in templates::
+              [mysetting]
+              setting = 'xxx'
 
-                [mysetting]
-                setting = 'xxx'
+          in the template side::
 
-            in the template side::
+              {{config.mysetting.setting}}
 
-                {{config.mysetting.setting}}
-
-            but you can touch `blog` or `author` more quick::
+          but you can touch `blog` or `author` more quick::
 
                 {{blog.name}}
                 {{author, email}}
-                ... # etc
-            than this way::
+          than this way::
 
                 {{config.blog.name}}
                 {{config.author.email}}
 
-            config is indeed what in your config.toml
-
+          config is indeed what in your config.toml.
         """
         dct = dict(
             blog=self.blog,
@@ -231,15 +227,7 @@ class Generator(object):
         log.ok("Render archives ok.")
 
     def render_about_page(self):
-        """
-          render about me page.
-
-          attributes
-            html        rendered about.md's markdown's html production
-
-          About page has no toml header neither no separator, only markdown.
-
-        """
+        """render about me page"""
         src = join(self.src_dir, "about" + self.src_ext)
         if exists(src):
             content = open(src).read().decode(charset)
@@ -252,9 +240,7 @@ class Generator(object):
         log.ok("Render about page ok.")
 
     def generate_feed(self):
-        """
-          generate feed of first 10 posts.
-        """
+        """generate feed of first 10 posts"""
         for post in self.posts[:10]:
             self.feed.add(
                 title=post.title,
@@ -269,7 +255,7 @@ class Generator(object):
         log.ok("Generate feed.atom ok.")
 
     def render_404(self):
-        """4o4"""
+        """404 page"""
         self.render_to(join(self.out_dir, "404"+self.out_ext), "404.html")
         log.ok("render 404.html ok")
 

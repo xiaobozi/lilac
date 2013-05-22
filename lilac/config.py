@@ -2,7 +2,6 @@
 
 """
   Configuration manager for lilac.
-
   lilac's configuration is in TOML::
 
       [blog]
@@ -16,7 +15,6 @@
 
   each key of the configuration should be set and
 valid.
-
 """
 
 from ._ import charset
@@ -33,10 +31,9 @@ class Config(object):
         config = Config()
         config.read()  # return dict
         config.write(dct)  # write dict to config.toml
-
     """
 
-    filename = "config.toml"  # the
+    filename = "config.toml"
     path = os.path.join(".", filename)
 
     default = {
@@ -53,10 +50,9 @@ class Config(object):
     }
 
     def read(self):
-        """Read and parse config, return dict"""
+        """Read and parse config, return a dict"""
         if not os.path.exists(self.path):
-            # if './config.toml' not exists, touch it
-            open(self.path, "a").close()
+            open(self.path, "a").close()  # if not exists, touch one
         content = open(self.path).read().decode(charset)
         return toml.loads(content)
 
@@ -66,4 +62,4 @@ class Config(object):
         return open(self.path).write(content.encode(charset))
 
 
-config = Config()  # yes, build a config instance
+config = Config()  # build a config instance

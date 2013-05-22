@@ -1,7 +1,7 @@
 # coding=utf8
 
 """
-  models in lilac.
+models in lilac: Blog, Author, About, Tag, Post, Page
 """
 
 from hashlib import md5
@@ -9,18 +9,11 @@ from hashlib import md5
 
 class Blog(object):
     """
-      Blog should have only one instance.
-
       attributes
         name            unicode     this blog's name
         description     unicode     this blog's description
         url             str         the url of your blog
         templates       str         which set of templates to use
-
-      Note: `url` should be a remote url, you needn't to change url back
-    to `localhost` to preview pages locally, this url is only used in feed
-    generation so far.
-
     """
 
     def __init__(self, name=None, description=None, url=None, templates=None):
@@ -32,8 +25,6 @@ class Blog(object):
 
 class Author(object):
     """
-      The author of this blog.
-
       attributes
         name        unicode         your(the author) name
         email       unicode(or str) your(the author) email
@@ -48,22 +39,19 @@ class Author(object):
 
     @property
     def gravatar_id(self):
+        """proerty decorated method to return md5 hash sum of author's email"""
         return md5(self.email).hexdigest()
 
 
 class Post(object):
     """
-      Post object.
-
       attributes
-        markdown    unicode     post's markdown source
-        html        unicode     post's body's html
-        title       unicode     post's title
-        datetime    datetime    post's create time
-        tags        list        post's tags
+        markdown    unicode     markdown source(the body)
+        html        unicode     body's html
+        title       unicode     title
+        datetime    datetime    create time
+        tags        list        tags
         name        str         filename without exitension
-        ..          these attributes are from key-to-value dict
-      from head(which is in toml)
 
       A post is made up of header and body, they are separated by a separator
     '----'. The header is in toml, and the body is in markdown, the separator
@@ -89,7 +77,7 @@ class Post(object):
         post.mysettings["setting"]
 
     and touch it in jinja2 templates in this way(as jinja2 enable
-    to get an item of some dict like the way getting attributes)::
+    us to get an item of some dict like the way getting attributes)::
 
         {{post.mysettings.setting}}
 
@@ -109,8 +97,6 @@ class Post(object):
 
 class Tag(object):
     """
-      Tag object.
-
       Each post may belong to some tags, each tag has some posts.
 
       attributes
@@ -128,8 +114,6 @@ class Tag(object):
 
 class Page(object):
     """
-      Page object.
-
       attributes
         number      int     the 1st, 2nd or 3rd page?
         posts       list    the posts in this page
@@ -149,8 +133,6 @@ class Page(object):
 
 class About(object):
     """
-      AboutMe object
-
       attributes
         html        its content's rendered production
         markdown    its content
