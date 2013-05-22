@@ -25,7 +25,7 @@ from .parser import PostDateTimeInvalid
 from .parser import PostTagsTypeInvalid
 
 from .utils import chunks
-from .utils import logger
+from .utils import fatal
 from .utils import update_nested_dict
 from .utils import progress_logger
 
@@ -104,7 +104,7 @@ class Generator(object):
         try:
             re = self.env.get_template(template).render(**dct)
         except TemplateNotFound:
-            logger.error("Template '%s' not found in directory '%s'" % (template, self.blog.templates))
+            fatal("Template '%s' not found in directory '%s'" % (template, self.blog.templates))
         else:
             return re
 
@@ -127,17 +127,17 @@ class Generator(object):
             try:
                 post = parser.parse_from(filepath)
             except SeparatorNotFound:
-                logger.error("separator not found in post '%s'" % filepath)
+                fatal("separator not found in post '%s'" % filepath)
             except PostTitleNotFound:
-                logger.error("title not found in post '%s'" % filepath)
+                fatal("title not found in post '%s'" % filepath)
             except PostDateTimeNotFound:
-                logger.error("datetime not found in post '%s'" % filepath)
+                fatal("datetime not found in post '%s'" % filepath)
             except PostDateTimeInvalid:
-                logger.error(
+                fatal(
                     "datetime invalid in post '%s', e.g.'2013-04-05 10:10'" % filepath
                 )
             except PostTagsTypeInvalid:
-                logger.error("tags should be array type in post '%s'" % filepath)
+                fatal("tags should be array type in post '%s'" % filepath)
             else:
                 post.name = fn[:-3]  # set it a name attribute
                 self.posts.append(post)
@@ -242,6 +242,7 @@ class Generator(object):
 
     def generate(self):
         """Generate posts, tags, all pages."""
+
         steps = [
             self.initialize,
             self.parse_posts,

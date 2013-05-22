@@ -8,62 +8,70 @@ import sys
 from termcolor import colored
 
 
-class Logger(object):
-    """logging message to screen"""
-
-    def error(self, message):
-        """Error message in red, kill the sys"""
-        print colored(message, "red")
-        sys.exit(1)
-
-    def info(self, message):
-        """Print message"""
-        print message
-
-    def ok(self, message):
-        """Tell the user the success message"""
-        print colored(message, "green")
-
-    def warn(self, message):
-        """Warning message"""
-        print colored(message, "yellow")
-
-logger = Logger()
-
-
 class ProgressLogger(object):
+    """
+      Log progress's status to console::
+          [...] progress's description
+      or::
+          [done] progress's description
+      usage::
+          progress_logger = ProgressLogger()
+          with progress_logger.reset(description):  # reset description
+            task()  # do task
+    """
+
+    DONE = 1
+    UNDO = 2
+    ERROR = 3
 
     def __init__(self, description=''):
         self.reset(description)
 
     def reset(self, description):
         self.description = description
-        self.done = False
+        self.state = self.UNDO
         return self
 
     @property
     def text(self):
-        if self.done:
+        if self.state is self.DONE:
             state = "[done]"
             color = "green"
-        else:
+        elif self.state is self.UNDO:
             state = "[....]"
             color = "yellow"
-        return colored(state, color) + "  " + self.description
+        elif self.state is self.ERROR:
+            state = "[error]"
+            color = "red"
+
+        if self.description:
+            return colored(state, color) + "  " + self.description
+        else:
+            return ''
 
     def __enter__(self):
         sys.stdout.write(self.text)
         sys.stdout.flush()
 
-    def __exit__(self, type, value, traceback):
+    def __exit__(self, etype, evalue, traceback):
         # clean this line
-        sys.stdout.write("\r%s" % ' '* len(self.text))
+        sys.stdout.write("\r" + ' '*len(self.text))
+
+        if evalue:  # if has exceptions, raise it
+            self.state = self.ERROR
+            self.description = str(evalue)
+        else:  # task has been done
+            self.state = self.DONE
+
         # back to left
         sys.stdout.write("\r")
-        self.done = True
         sys.stdout.write(self.text)
         sys.stdout.write("\n")
         sys.stdout.flush()
+        # TODO: Judge exception type,  if fatal, kill the script
+        # if warning,  go through
+        if etype:
+            sys.exit(1)
 
 
 progress_logger = ProgressLogger()
@@ -98,3 +106,8 @@ def update_nested_dict(a, b):
         else:
             a[k] = v
     return a
+
+
+def fatal(message):
+    """Display error and exit the script"""
+    sys.exit(message)  # just raise Systemexit

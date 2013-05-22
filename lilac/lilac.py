@@ -1,8 +1,7 @@
 # coding=utf8
 # This is the application script also the cli interface.
 
-"""
-Usage:
+"""Usage:
   lilac [-h|-v]
   lilac deploy
   lilac generate
@@ -20,7 +19,7 @@ Commands:
 
 from ._ import version
 from .generator import generator
-from .utils import logger
+from .utils import progress_logger
 from subprocess import call
 from docopt import docopt
 
@@ -30,6 +29,7 @@ import os
 # tasks
 
 def deploy():
+    """deploy blog: classic/, src/post/helloworld.md, src/about.md, config.toml, Makefile"""
     lilac_dir = os.path.dirname(__file__)
     res = os.path.join(lilac_dir, "resources")
     classic = os.path.join(res, "classic")
@@ -42,11 +42,10 @@ def deploy():
     call(["cp", sample_config, "."])
     call(["cp", "-r", classic, "."])
     call(["cp", makefile_path, "."])
-    logger.ok("Deployment complete")
-    logger.info("Please edit config.toml")
 
 
 def clean():
+    """rm -rf post page tag 404.html about.html archives.html feed.atom index.html tags.html"""
     paths = [
         "post",
         "page",
@@ -60,10 +59,7 @@ def clean():
     ]
 
     cmd = ["rm", "-rf"] + paths
-    logger.info(" ".join(cmd))
-    exit_code = call(cmd)
-    if exit_code == 0:
-        logger.ok("Clean done")
+    call(cmd)
 
 
 def generate():
@@ -71,14 +67,15 @@ def generate():
 
 
 def main():
-    dct = docopt(__doc__, version='lilac version ' + version)
+    arguments = docopt(__doc__, version='lilac version ' + version)
 
-    task = lambda: exit(__doc__)
-
-    if dct['deploy']:
-        task = deploy
-    if dct['clean']:
-        task = clean
-    if dct['generate']:
-        task = generate
-    task()
+    if arguments["deploy"]:
+        with progress_logger.reset(deploy.__doc__):
+            deploy()
+    elif arguments["clean"]:
+        with progress_logger.reset(clean.__doc__):
+            clean()
+    elif arguments["generate"]:
+        generate()
+    else:
+        exit(__doc__)
