@@ -25,7 +25,7 @@ class ColoredFormatter(Formatter):
             'DEBUG': 'bggrey',
         }
         color = mapping.get(record.levelname, 'white')
-        return colored(record.levelname, color) + ': ' + message
+        return colored('[' + record.levelname + ']', color) + ' ' + message
 
 
 logger = getLogger('lilac')

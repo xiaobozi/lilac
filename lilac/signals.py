@@ -9,3 +9,4 @@ building process"""
 from blinker import signal
 
 initialized = signal('initialized')
+posts_parsed = signal('posts_parsed')

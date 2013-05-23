@@ -110,8 +110,11 @@ class Parser(object):
             raise PostTagsTypeInvalid
 
         attrs['markdown'] = body  # append markdown to attributes
-
         return Post(**attrs)
+
+    def parse_from(self, filepath):
+        """parse from filepath, return <Post object>"""
+        return self.parse(open(filepath).read().decode(charset))
 
 
 parser = Parser()  # build a runtime parser
