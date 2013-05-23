@@ -1,19 +1,18 @@
 # coding=utf8
 
-"""
-models in lilac: Blog, Author, About, Tag, Post, Page
-"""
+"""models in lilac: Blog, Author, Post, Tag, Page"""
 
 from hashlib import md5
 
 
 class Blog(object):
     """
-      attributes
-        name            unicode     this blog's name
-        description     unicode     this blog's description
-        url             str         the url of your blog
-        templates       str         which set of templates to use
+    The blog itself.
+    attributes
+      name        unicode     blog's name
+      description unicode     blog's description
+      url         str         blog's site url
+      templates   str         which set of templates to use
     """
 
     def __init__(self, name=None, description=None, url=None, templates=None):
@@ -25,12 +24,12 @@ class Blog(object):
 
 class Author(object):
     """
-      attributes
-        name        unicode         your(the author) name
-        email       unicode(or str) your(the author) email
-        gravatar_id str             gravatar_id generated from email
-      And the gravatar comes from this email.
-
+    The blog's author, only one.
+    attributs
+      name          unicode     author's name
+      email         unicode     author's email
+      gravatar_id   str         gravatar_id generated from email
+    the gravatar_id is a property decorated method.
     """
 
     def __init__(self, name=None, email=None):
@@ -39,56 +38,29 @@ class Author(object):
 
     @property
     def gravatar_id(self):
-        """proerty decorated method to return md5 hash sum of author's email"""
+        """it's md5(author.email), author's gravatar_id"""
         return md5(self.email).hexdigest()
 
 
 class Post(object):
     """
-      attributes
-        markdown    unicode     markdown source(the body)
-        html        unicode     body's html
-        title       unicode     title
-        datetime    datetime    create time
-        tags        list        tags
-        name        str         filename without exitension
-
-      A post is made up of header and body, they are separated by a separator
-    '----'. The header is in toml, and the body is in markdown, the separator
-    should be a single line all of character '-'(at least 3)::
-
-          title = 'This-is-post-title'
-          datetime = '2013-04-05 12:00'
-          tags = ['tag1', 'tag2']
-          ...
-          -------
-          markdown here
-
-      And `title` and `datetime` is required in a post, the tags are optional,
-    all keys in header will be attributes of this post, for instance::
-
-        [mysettings]
-        setting = 1
-        -----------
-        markdown here
-
-    we can touch `setting` in this way::
-
-        post.mysettings["setting"]
-
-    and touch it in jinja2 templates in this way(as jinja2 enable
-    us to get an item of some dict like the way getting attributes)::
-
-        {{post.mysettings.setting}}
-
+    The blog's post(s).
+    attributes
+      name      str      post's filename without extension
+      title     unicode  post's title
+      datetime  datetime post's create time, e.g. "2012-10-10 13:20"
+      tags      list     post's tags
+      markdown  unicode  post's markdown source(its body)
+      html      unicode  post's html(parrsed from markdown)
     """
 
-    def __init__(self, title, datetime, markdown, html, tags=None, name=None):
+    def __init__(self, name=None, tags=None, title=None, datetime=None, markdown=None, html=None):
+        self.name = name
         self.title = title
         self.datetime = datetime
         self.markdown = markdown
         self.html = html
-        self.name = name
+
         if tags is None:
             self.tags = []
         else:
@@ -97,15 +69,15 @@ class Post(object):
 
 class Tag(object):
     """
-      Each post may belong to some tags, each tag has some posts.
-
-      attributes
-        name        unicode     tag's name
-        posts       list        posts in this tag
+    Each posts may have tags, each tag has some posts.
+    attributes
+      name      unicode     tag's name
+      posts     list        posts in this tag
     """
 
-    def __init__(self, name, posts=None):
+    def __init__(self, name=None, posts=None):
         self.name = name
+
         if posts is None:
             self.posts = []
         else:
@@ -114,31 +86,32 @@ class Tag(object):
 
 class Page(object):
     """
-      attributes
-        number      int     the 1st, 2nd or 3rd page?
-        posts       list    the posts in this page
-        frist       bool    is this page the first page?
-        last        bool    is this page the last page?
+    The pages, 1st, 2nd, 3rd page..
+    attributes
+      number    int   the order of this page
+      posts     list  the posts in this page
+      first     bool  is this page the first page?
+      last      bool  is this page the last page
     """
 
-    def __init__(self, number, posts=None, first=False, last=False):
+    def __init__(self, number=1, posts=None, first=False, last=False):
         self.number = number
+        self.first = first
+        self.last = last
+
         if posts is None:
             self.posts = []
         else:
             self.posts = posts
-        self.first = first
-        self.last = last
 
 
 class About(object):
     """
-      attributes
-        html        its content's rendered production
-        markdown    its content
-
-      The source `src/about.md` would be rendered to `about.html`.
-    and, `about` has no toml header, but only body in markdown.
+    The blog's about page, only one.
+    attributes
+      markdown  its content
+      html      its markdown's html
+    About has no header, only body in markdown.
     """
 
     def __init__(self, markdown=None, html=None):

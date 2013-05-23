@@ -36,11 +36,3 @@
 # lilac - a static blog generator.
 # https://github.com/hit9/lilac
 # nz2324 AT 126.com
-
-
-"""Name space shortcut"""
-
-from ._ import version
-from .config import config
-from .parser import parser
-from .generator import generator
