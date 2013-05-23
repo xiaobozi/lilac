@@ -2,6 +2,7 @@
 
 """models in lilac: Blog, Author, Post, Tag, Page"""
 
+
 from hashlib import md5
 
 
