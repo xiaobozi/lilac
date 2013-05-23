@@ -37,6 +37,7 @@
 # https://github.com/hit9/lilac
 # nz2324 AT 126.com
 
-"""Names' shortcut"""
+"""global vars"""
 
-from .parser import parser
+version = "0.2.0"
+charset = "utf8"  # utf8 read and write everywhere

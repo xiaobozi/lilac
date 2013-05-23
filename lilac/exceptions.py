@@ -41,3 +41,8 @@ class PostTagsTypeInvalid(ParseException):
 class PostHeaderSyntaxError(ParseException):
     """TomlSyntaxError occurred in post's header"""
     pass
+
+
+class ConfigSyntaxError(LilacException):
+    """TomlSyntaxError occurred in config.toml"""
+    pass

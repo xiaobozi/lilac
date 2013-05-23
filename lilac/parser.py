@@ -3,7 +3,7 @@
 """this module provides a parser to parse post's source to post instance"""
 
 
-from ._ import charset
+from . import charset
 from .models import Post
 from .exceptions import *
 
@@ -89,6 +89,8 @@ class Parser(object):
             attrs = toml.loads(header)
         except toml.TomlSyntaxError:  # if header syntax error
             raise PostHeaderSyntaxError
+
+        #TODO: Check title and datetime's type
 
         if 'title' not in attrs:
             raise PostTitleNotFound
