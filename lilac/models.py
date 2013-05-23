@@ -52,19 +52,30 @@ class Post(object):
       tags      list     post's tags
       markdown  unicode  post's markdown source(its body)
       html      unicode  post's html(parrsed from markdown)
+    the `html` is a property decorated method
     """
 
-    def __init__(self, name=None, tags=None, title=None, datetime=None, markdown=None, html=None):
+    def __init__(
+        self,
+        name=None, tags=None, title=None, datetime=None, markdown=None
+    ):
         self.name = name
         self.title = title
         self.datetime = datetime
         self.markdown = markdown
-        self.html = html
 
         if tags is None:
             self.tags = []
         else:
             self.tags = tags
+
+    @property
+    def html(self):
+        """Return the post's content's rendered markdown"""
+        # the parser should be import in method, else will cause annoying loop
+        # import issue
+        from .parser import parser
+        return parser.markdown.render(self.markdown)
 
 
 class Tag(object):
@@ -111,9 +122,15 @@ class About(object):
     attributes
       markdown  its content
       html      its markdown's html
-    About has no header, only body in markdown.
+    about has no header, only body in markdown.
+    the `html` is a property decorated method.
     """
 
-    def __init__(self, markdown=None, html=None):
+    def __init__(self, markdown=None):
         self.markdown = markdown
-        self.html = html
+
+    @property
+    def html(self):
+        """Render its markdown to html"""
+        from .parser import parser
+        return parser.markdown.render(self.markdown)

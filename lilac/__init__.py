@@ -36,3 +36,7 @@
 # lilac - a static blog generator.
 # https://github.com/hit9/lilac
 # nz2324 AT 126.com
+
+"""Names' shortcut"""
+
+from .parser import parser

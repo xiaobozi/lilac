@@ -10,3 +10,4 @@ testing
 venv/
 test.py
 tests/
+test.md
