@@ -28,7 +28,7 @@ class PostTitleNotFound(ParseException):
     pass
 
 
-class PostDataTimeInvalid(ParseException):
+class PostDateTimeInvalid(ParseException):
     """Invalid datetime format, should like '2012-04-05 10:10' """
     pass
 

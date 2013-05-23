@@ -70,7 +70,7 @@ class Parser(object):
         """Parse unicode post source to <Post object>"""
         lines = source.splitlines()
 
-        l = None # flag: if there is separator
+        l = None  # flag: if there is separator
 
         for line_no, line in enumerate(lines):
             if self.separator in line:
@@ -92,15 +92,13 @@ class Parser(object):
 
         if 'title' not in attrs:
             raise PostTitleNotFound
-        else:
-            title = attrs.pop('title')
 
         if 'datetime' not in attrs:
             raise PostDateTimeNotFound
         else:
-            datetime_str = attrs.pop('datetime')
             try:
-                datetime.strptime(datetime_str, "%Y-%m-%d %H:%M")
+                attrs['datetime'] = datetime.strptime(
+                    attrs["datetime"], "%Y-%m-%d %H:%M")
             except ValueError:
                 raise PostDateTimeInvalid
 
