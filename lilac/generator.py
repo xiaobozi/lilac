@@ -16,7 +16,7 @@ from .logger import logger, logging
 import sys
 from os import listdir as ls
 from os.path import join
-from os.path import join
+from os.path import exists
 from os import makedirs as mkdir
 from datetime import datetime
 from pyatom import AtomFeed
@@ -44,6 +44,7 @@ class Generator(object):
         signals.initialized.connect(self.parse_posts)
         signals.posts_parsed.connect(self.extract_tags)
         signals.posts_parsed.connect(self.compose_pages)
+        signals.posts_parsed.connect(self.render_posts)
 
     def initialize(self):
         """Initialize config, blog, author, feed and jinja2 environment"""
@@ -128,6 +129,24 @@ class Generator(object):
             self.pages[0].first = True
             self.pages[-1].last = True
         logger.success("Pages composed")
+
+    def render_posts(self, sender):
+        """Render all posts to 'post/' with template 'post.html'"""
+        logger.info(self.render_posts.__doc__)
+        posts_out_dir = join(out_dir, "post")
+
+        if not exists(posts_out_dir):
+            mkdir(posts_out_dir)
+
+        for post in self.posts:
+            out_path = join(posts_out_dir, post.name+out_ext)
+            try:
+                renderer.render_to(out_path, "post.html", post=post)
+            except RenderException as e:
+                logger.error(e.__doc__ + ": Template 'post.html'")
+                sys.exit(1)
+
+        logger.success("Posts rendered")
 
 
 generator = Generator()

@@ -3,7 +3,7 @@
 """renderer to render data with jinja2 templates"""
 
 from . import charset
-from .exceptions import TemplateNotFound
+from .exceptions import JinjaTemplateNotFound
 from jinja2 import Environment, FileSystemLoader
 from jinja2.exceptions import TemplateNotFound
 
@@ -29,13 +29,13 @@ class Renderer(object):
           data       dict the data to render
         """
         # make a copy and update the copy
-        dct = global_data.copy()
+        dct = self.global_data.copy()
         dct.update(data)
 
         try:
             html = self.env.get_template(template).render(**dct)
         except TemplateNotFound:
-            raise TemplateNotFound
+            raise JinjaTemplateNotFound
         return html
 
     def render_to(self, path, template, **data):

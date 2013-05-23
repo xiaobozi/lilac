@@ -53,6 +53,6 @@ class ConfigSyntaxError(LilacException):
     pass
 
 
-class TemplateNotFound(RenderException):
-    """Some template was not found"""
+class JinjaTemplateNotFound(RenderException):
+    """Jinja2 template was not found"""
     pass
