@@ -41,3 +41,7 @@
 
 version = "0.2.0"
 charset = "utf8"  # utf8 read and write everywhere
+src_ext = ".md"   # source filename extension
+out_ext = ".html" # output filename extension
+src_dir = "src"   # source directory, './src'
+out_dir = "."  # output directory, './'

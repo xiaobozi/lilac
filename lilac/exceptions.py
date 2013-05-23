@@ -9,27 +9,32 @@ class LilacException(Exception):
 
 
 class ParseException(LilacException):
-    """There was an exception occurred while parsing the source."""
+    """There was an exception occurred while parsing the source"""
+    pass
+
+
+class RenderException(LilacException):
+    """There was an exception occurred while rendering to html"""
     pass
 
 
 class SeparatorNotFound(ParseException):
-    """Raised when no separator found in a post"""
+    """There was no separator found in post's source"""
     pass
 
 
 class PostDateTimeNotFound(ParseException):
-    """Raised when no datetime found in a post"""
+    """There was no datetime found in post's source"""
     pass
 
 
 class PostTitleNotFound(ParseException):
-    """Raised when no title found in a post"""
+    """There was no title found in post's source"""
     pass
 
 
 class PostDateTimeInvalid(ParseException):
-    """Invalid datetime format, should like '2012-04-05 10:10' """
+    """Invalid datetime format, should like '2012-04-05 10:10'"""
     pass
 
 
@@ -45,4 +50,9 @@ class PostHeaderSyntaxError(ParseException):
 
 class ConfigSyntaxError(LilacException):
     """TomlSyntaxError occurred in config.toml"""
+    pass
+
+
+class TemplateNotFound(RenderException):
+    """Some template was not found"""
     pass

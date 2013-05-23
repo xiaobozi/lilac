@@ -25,7 +25,7 @@ class ColoredFormatter(Formatter):
             'DEBUG': 'bggrey',
         }
         color = mapping.get(record.levelname, 'white')
-        return colored(record.levelname, color) + ': ' +message
+        return colored(record.levelname, color) + ': ' + message
 
 
 logger = getLogger('lilac')
@@ -38,7 +38,8 @@ logger.addHandler(handler)
 # add level 'success'
 logging.SUCCESS = 25  # 25 is between WARNING(30) and INFO(20)
 logging.addLevelName(logging.SUCCESS, 'SUCCESS')
-setattr(logger, 'success', lambda message, *args: logger._log(logging.SUCCESS, message, args))
+logger.success = lambda msg, *args: logger._log(logging.SUCCESS, msg, args)
+
 
 if __name__ == '__main__':
     logger.setLevel(logging.DEBUG)
