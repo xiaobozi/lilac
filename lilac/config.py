@@ -9,6 +9,7 @@ import toml
 from os.path import join
 from os.path import exists
 
+
 class Config(object):
     """Configuration manager"""
 
