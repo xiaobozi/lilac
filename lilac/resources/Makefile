@@ -1,7 +1,12 @@
 # Makefile to manage blog
 
-all:
-	lilac generate
+help:
+	@echo "Help message:"
+	@echo "  build  -  to build markdown to html"
+	@echo "  clean  -  to remove htmls built by lilac"
+
+build:
+	lilac build
 
 clean:
 	rm -rf post page tag 404.html about.html archives.html feed.atom index.html tags.html 

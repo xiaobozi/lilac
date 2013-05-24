@@ -33,8 +33,6 @@ class Generator(object):
         self.feed = Feed()
         self.page_404 = Page404()
         self.config = config.default
-        # set logger's level to info
-        logger.setLevel(logging.INFO)
         # register signals
         self.register_signals()
 
