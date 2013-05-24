@@ -8,6 +8,11 @@ class LilacException(Exception):
     pass
 
 
+class SourceDirectoryNotFound(LilacException):
+    """Source directory was not found"""
+    pass
+
+
 class ParseException(LilacException):
     """There was an exception occurred while parsing the source"""
     pass

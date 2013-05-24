@@ -2,6 +2,9 @@
 
 """this module provides utility functions that are used within lilac"""
 
+import os
+import errno
+
 
 def chunks(lst, number):
     """
@@ -41,17 +44,27 @@ def update_nested_dict(a, b):
     return a
 
 
+def mkdir_p(path):
+    """mkdir -p
+    Note: comes from stackoverflow"""
+    try:
+        os.makedirs(path)
+    except OSError as exc:  # Python >2.5
+        if exc.errno == errno.EEXIST and os.path.isdir(path):
+            pass
+        else:
+            raise
+
+
 class Color(object):
     """
      utility to return ansi colored text
      usage::
 
-         >>> from color import colored
          >>> colored("text","red")
-         '\x1b[31mtext\x1b[0m'
+        '\x1b[31mtext\x1b[0m'
 
     """
-
     colors = {
         'black': 30,
         'red': 31,
@@ -75,6 +88,5 @@ class Color(object):
 
         clr = self.colors[color]
         return (self.prefix+'%dm%s'+self.suffix) % (clr, text)
-
 
 colored = Color().colored

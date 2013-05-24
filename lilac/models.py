@@ -3,7 +3,13 @@
 """models in lilac: Blog, Author, Post, Tag, Page"""
 
 
+from . import src_ext, out_ext, src_dir, out_dir
+from .exceptions import SourceDirectoryNotFound
+
 from hashlib import md5
+from os.path import join
+from os import listdir as ls
+from os.path import exists
 
 
 class Blog(object):
@@ -56,6 +62,10 @@ class Post(object):
     the `html` is a property decorated method
     """
 
+    src_dir = join(src_dir, "post")  # src directroy of posts
+    out_dir = join(out_dir, "post")  # html directroy of posts
+    template = "post.html"  # all posts are rendered with this template
+
     def __init__(
         self,
         name=None, tags=None, title=None, datetime=None, markdown=None
@@ -78,6 +88,33 @@ class Post(object):
         from .parser import parser
         return parser.markdown.render(self.markdown)
 
+    @property
+    def src(self):
+        """Return the post's source filepath"""
+        return join(Post.src_dir, self.name + src_ext)
+
+    @property
+    def out(self):
+        """Return the post's output(html) filepath"""
+        return join(Post.out_dir, self.name + out_ext)
+
+    @classmethod
+    def glob_src_files(cls):
+        """Glob source files return filepath to name dict"""
+
+        if not exists(Post.src_dir):
+            raise SourceDirectoryNotFound
+
+        dct = {}
+
+        for fn in ls(Post.src_dir):
+            if fn.endswith(src_ext):
+                name = fn[:-len(src_ext)]
+                path = join(Post.src_dir, fn)
+                dct[path] = name
+
+        return dct
+
 
 class Tag(object):
     """
@@ -87,6 +124,9 @@ class Tag(object):
       posts     list        posts in this tag
     """
 
+    out_dir = join(out_dir, "tag")
+    template = "tag.html"
+
     def __init__(self, name=None, posts=None):
         self.name = name
 
@@ -94,6 +134,11 @@ class Tag(object):
             self.posts = []
         else:
             self.posts = posts
+
+    @property
+    def out(self):
+        """return this tag's output filepath"""
+        return join(Tag.out_dir, self.name + out_ext)
 
 
 class Page(object):
@@ -106,6 +151,9 @@ class Page(object):
       last      bool  is this page the last page
     """
 
+    template = "page.html"
+    out_dir = join(out_dir, "page")
+
     def __init__(self, number=1, posts=None, first=False, last=False):
         self.number = number
         self.first = first
@@ -115,6 +163,13 @@ class Page(object):
             self.posts = []
         else:
             self.posts = posts
+
+    @property
+    def out(self):
+        if self.first:
+            return join(out_dir, "index" + out_ext)
+        else:
+            return join(Page.out_dir, str(self.number) + out_ext)
 
 
 class About(object):
@@ -135,3 +190,23 @@ class About(object):
         """Render its markdown to html"""
         from .parser import parser
         return parser.markdown.render(self.markdown)
+
+
+class Tags(object):
+    """
+    the 'tags.html' of this blog, it displays all tags
+    in single page.
+    """
+
+    def __init__(self):
+        self.template = "tags.html"
+        self.out = join(out_dir, "tags" + out_ext)
+
+
+class Archives(object):
+    """the 'archives.html' of this blog, it displays all posts
+    in single page."""
+
+    def __init__(self):
+        self.template = "archives.html"
+        self.out = join(out_dir, "archives" + out_ext)

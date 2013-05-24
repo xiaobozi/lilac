@@ -10,14 +10,9 @@ from .parser import parser
 from .renderer import renderer
 from .exceptions import *
 from .utils import *
-from . import src_ext, out_ext, src_dir, out_dir
 from .logger import logger, logging
 
 import sys
-from os import listdir as ls
-from os.path import join
-from os.path import exists
-from os import makedirs as mkdir
 from datetime import datetime
 from pyatom import AtomFeed
 
@@ -33,6 +28,8 @@ class Generator(object):
         self.about = About()
         self.blog = Blog()
         self.author = Author()
+        self._tags = Tags()
+        self.archives = Archives()
         self.config = config.default
         # set logger's level to info
         logger.setLevel(logging.INFO)
@@ -45,11 +42,20 @@ class Generator(object):
         signals.posts_parsed.connect(self.extract_tags)
         signals.posts_parsed.connect(self.compose_pages)
         signals.posts_parsed.connect(self.render_posts)
+        signals.posts_parsed.connect(self.render_archives)
         signals.tags_extracted.connect(self.render_tags)
+        signals.page_composed.connect(self.render_pages)
 
+    def step(step_method):
+        """decorator to wrap each step method"""
+        def wrapper(self, *args, **kwargs):
+            logger.info(step_method.__doc__)
+            return step_method(self, *args, **kwargs)
+        return wrapper
+
+    @step
     def initialize(self):
         """Initialize config, blog, author, feed and jinja2 environment"""
-        logger.info(self.initialize.__doc__)
         # read config to update the default
         update_nested_dict(self.config, config.read())
         # update blog and author according to configuration
@@ -74,23 +80,25 @@ class Generator(object):
         # send signal that generator was already initialized
         signals.initialized.send(self)
 
+    @step
     def parse_posts(self, sender):
         """Parse posts and sort them by create time"""
-        logger.info(self.parse_posts.__doc__)
-        posts_src_dir = join(src_dir, "post")
-        # get all posts' filename
-        files = [fn for fn in ls(posts_src_dir) if fn.endswith(src_ext)]
+        # glob all source files
+        try:
+            files = Post.glob_src_files()
+        except SourceDirectoryNotFound as e:
+            logger.error(e.__doc__)
+            sys.exit(1)
 
         # parse each post's content and append post instance to self.posts
-        for fn in files:
-            filepath = join(posts_src_dir, fn)  # source file full path
+        for filepath, name in files.iteritems():
             try:
                 post = parser.parse_from(filepath)
             except ParseException, e:
                 logger.warn(e.__doc__ + ": filepath '%s'" % filepath)
-                pass  # skip the wrong post
+                pass  # skip the wrong parsed post
             else:
-                post.name = fn[:-3]  # set it a name attribute
+                post.name = name  # set it a name attribute
                 self.posts.append(post)
         # sort posts by its create time
         self.posts.sort(
@@ -100,9 +108,9 @@ class Generator(object):
         logger.success("Posts parsed")
         signals.posts_parsed.send(self)
 
+    @step
     def extract_tags(self, sender):
         """Extract tags from posts, and sort by their posts' amount"""
-        logger.info(self.extract_tags.__doc__)
         # traversal all posts and get the minial tag to posts dict
         tags = {}
 
@@ -119,9 +127,9 @@ class Generator(object):
         logger.success("Tag extracted")
         signals.tags_extracted.send(self)
 
+    @step
     def compose_pages(self, sender):
         """Compose pages from posts"""
-        logger.info(self.compose_pages.__doc__)
         groups = chunks(self.posts, 7)  # 7 posts per page
 
         for index, group in enumerate(groups):
@@ -131,6 +139,7 @@ class Generator(object):
             self.pages[0].first = True
             self.pages[-1].last = True
         logger.success("Pages composed")
+        signals.page_composed.send(self)
 
     def render_to(self, path, template, **data):
         """shortcut to render data with template and then write to path.
@@ -141,36 +150,45 @@ class Generator(object):
             logger.error(e.__doc__ + ": Template '%s'" % template)
             sys.exit(1)  # template not found,  must exit the script
 
+    @step
     def render_posts(self, sender):
         """Render all posts to 'post/' with template 'post.html'"""
-        logger.info(self.render_posts.__doc__)
-        posts_out_dir = join(out_dir, "post")
-
-        if not exists(posts_out_dir):
-            mkdir(posts_out_dir)
+        mkdir_p(Post.out_dir)
 
         for post in self.posts:
-            out_path = join(posts_out_dir, post.name+out_ext)
-            self.render_to(out_path, "post.html", post=post)
+            self.render_to(post.out, Post.template, post=post)
 
         logger.success("Posts rendered")
 
+    @step
     def render_tags(self, sender):
         """Render all tags to 'tag/' with template 'tag.html'"""
-        logger.info(self.render_tags.__doc__)
-        tags_out_dir = join(out_dir, "tag")
-
-        if not exists(tags_out_dir):
-            mkdir(tags_out_dir)
+        mkdir_p(Tag.out_dir)
 
         for tag in self.tags:
-            out_path = join(tags_out_dir, tag.name + out_ext)
-            self.render_to(out_path, "tag.html", tag=tag)
+            self.render_to(tag.out, Tag.template, tag=tag)
 
-        # the 'tags.html'
-        out_path = join(out_dir, "tags" + out_ext)
-        self.render_to(out_path, "tags.html", tags=self.tags)
-        logger.info("Tags rendered")
+        self.render_to(self._tags.out, self._tags.template, tags=self.tags)
+        logger.success("Tags rendered")
+
+    @step
+    def render_pages(self, sender):
+        """Render all pages to 'page/' with template 'page.html'"""
+        # set attribute `summary` to each post
+        for post in self.posts:
+            setattr(post, "summary", parser.markdown.render(post.markdown[:255]))
+
+        mkdir_p(Page.out_dir)
+
+        for page in self.pages:
+            self.render_to(page.out, Page.template, page=page)
+        logger.success("Pages rendered")
+
+    @step
+    def render_archives(self, sender):
+        """Render archives page to 'archives.html' with template 'archives.html'"""
+        self.render_to(self.archives.out, self.archives.template, posts=self.posts)
+        logger.success("Archives rendered")
 
 
 generator = Generator()
