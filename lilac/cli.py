@@ -40,6 +40,8 @@ def deploy():
     call(["cp", makefile_path, "."])
     logger.success("deploy done")
     logger.info("Please edit config.toml to meet tour needs")
+    logger.info("Run 'make build' to build blog to htmls")
+    logger.info("Run 'make clean' to remove built htmls")
 
 
 @task
