@@ -45,6 +45,7 @@ class Generator(object):
         signals.posts_parsed.connect(self.extract_tags)
         signals.posts_parsed.connect(self.compose_pages)
         signals.posts_parsed.connect(self.render_posts)
+        signals.tags_extracted.connect(self.render_tags)
 
     def initialize(self):
         """Initialize config, blog, author, feed and jinja2 environment"""
@@ -116,6 +117,7 @@ class Generator(object):
         # sort by tag's size
         self.tags.sort(key=lambda x: len(x.posts), reverse=True)
         logger.success("Tag extracted")
+        signals.tags_extracted.send(self)
 
     def compose_pages(self, sender):
         """Compose pages from posts"""
@@ -147,6 +149,24 @@ class Generator(object):
                 sys.exit(1)
 
         logger.success("Posts rendered")
+
+    def render_tags(self, sender):
+        """Render all tags to 'tag/' with template 'tag.html'"""
+        logger.info(self.render_tags.__doc__)
+        tags_out_dir = join(out_dir, "tag")
+
+        if not exists(tags_out_dir):
+            mkdir(tags_out_dir)
+
+        for tag in self.tags:
+            out_path = join(tags_out_dir, tag.name + out_ext)
+            # TODO: Add try except
+            renderer.render_to(out_path, "tag.html", tag=tag)
+
+        # the 'tags.html'
+        out_path = join(out_dir, "tags" + out_ext)
+        renderer.render_to(out_path, "tags.html", tags=self.tags)
+        logger.info("Tags rendered")
 
 
 generator = Generator()

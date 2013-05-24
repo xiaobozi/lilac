@@ -10,3 +10,4 @@ from blinker import signal
 
 initialized = signal('initialized')
 posts_parsed = signal('posts_parsed')
+tags_extracted = signal('tags_extracted')
