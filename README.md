@@ -1,7 +1,18 @@
 lilac
 =====
 
-It is ... a static blog generator.
+It is - **a static blog generator**
+
+Featrues
+--------
+
+- Toml & Markdown(GFM) based
+
+- 100% in Python
+
+- tags & feed support
+
+- minimal blog
 
 Quick Start
 -----------
@@ -51,6 +62,12 @@ To write a post, just follow the 3 simple steps:
 write body in markdown, header and body are separated with a line `----`
 
 3. run `make build` , and then preview under the ''cute' server in your browser
+
+
+About the Name
+--------------
+ 
+`lilac` is `紫丁香` in chinese, they are everywhere in my university HIT.
 
 License
 -------
