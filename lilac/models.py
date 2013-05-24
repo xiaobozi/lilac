@@ -68,7 +68,8 @@ class Post(object):
 
     def __init__(
         self,
-        name=None, tags=None, title=None, datetime=None, markdown=None
+        name=None, tags=None, title=None, datetime=None, markdown=None,
+        **other_attrs
     ):
         self.name = name
         self.title = title
@@ -79,6 +80,8 @@ class Post(object):
             self.tags = []
         else:
             self.tags = tags
+
+        self.__dict__.update(other_attrs)
 
     @property
     def html(self):
