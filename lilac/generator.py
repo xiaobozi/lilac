@@ -4,13 +4,13 @@
 
 
 import signals
-from .models import *
 from .config import config
 from .parser import parser
 from .renderer import renderer
 from .exceptions import *
-from .utils import *
 from .logger import logger, logging
+from .utils import chunks, update_nested_dict, mkdir_p
+from .models import Blog, Author, Post, Tag, Page, About, Tags, Archives, Feed, Page404
 
 import sys
 from datetime import datetime
@@ -30,6 +30,8 @@ class Generator(object):
         self.author = Author()
         self._tags = Tags()
         self.archives = Archives()
+        self.feed = Feed()
+        self.page_404 = Page404()
         self.config = config.default
         # set logger's level to info
         logger.setLevel(logging.INFO)
@@ -39,10 +41,13 @@ class Generator(object):
     def register_signals(self):
         """Register all signals in this process"""
         signals.initialized.connect(self.parse_posts)
+        signals.initialized.connect(self.render_about_page)
+        signals.initialized.connect(self.render_page_404)
         signals.posts_parsed.connect(self.extract_tags)
         signals.posts_parsed.connect(self.compose_pages)
         signals.posts_parsed.connect(self.render_posts)
         signals.posts_parsed.connect(self.render_archives)
+        signals.posts_parsed.connect(self.generate_feed)
         signals.tags_extracted.connect(self.render_tags)
         signals.page_composed.connect(self.render_pages)
 
@@ -57,12 +62,18 @@ class Generator(object):
     def initialize(self):
         """Initialize config, blog, author, feed and jinja2 environment"""
         # read config to update the default
-        update_nested_dict(self.config, config.read())
+        try:
+            conf = config.read()
+        except ConfigSyntaxError as e:
+            logger.error(e.__doc__)
+            sys.exit(1)
+
+        update_nested_dict(self.config, conf)
         # update blog and author according to configuration
         self.blog.__dict__.update(self.config['blog'])
         self.author.__dict__.update(self.config['author'])
         # initialize feed
-        self.feed = AtomFeed(
+        self.feed.feed = AtomFeed(
             title=self.blog.name,
             subtitle=self.blog.description,
             feed_url=self.blog.url+"/feed.atom",
@@ -190,5 +201,31 @@ class Generator(object):
         self.render_to(self.archives.out, self.archives.template, posts=self.posts)
         logger.success("Archives rendered")
 
+    @step
+    def render_about_page(self, sender):
+        """Render about me page to 'about.html' with template 'about.html'"""
+        about = self.about
+        about.markdown = parser.markdown.render(about.content)
+        self.render_to(about.out, about.template, about=about)
+        logger.success("About page rendered")
 
+    @step
+    def generate_feed(self, sender):
+        """Generate feed for first 10 posts to 'feed.atom'"""
+        for post in self.posts[:self.feed.size]:
+            self.feed.feed.add(
+                title=post.title,
+                content=post.html,
+                content_type="html",
+                author=self.author.name,
+                url=self.blog.url + "/" + post.out,
+                updated=post.datetime
+            )
+        self.feed.write()
+        logger.success("Feed generated")
+
+    @step
+    def render_page_404(self, sender):
+        """Render 404 page to '404.html' with template '404.html' """
+        self.render_to(self.page_404.out, self.page_404.template)
 generator = Generator()

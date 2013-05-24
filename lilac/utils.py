@@ -56,6 +56,11 @@ def mkdir_p(path):
             raise
 
 
+def join(*p):
+    """return normpath version of path.join"""
+    return os.path.normpath(os.path.join(*p))
+
+
 class Color(object):
     """
      utility to return ansi colored text

@@ -1,10 +1,15 @@
 # Configuration for this blog
+# it is written in Toml
 
 [blog]
-name = "BlogName"  # What is your blog's name?
-description = "BlogDescription"  # What is your blog about?
-url = "http://your-blog.org"  # your blog's url, if you don't have one,  leave here blank
-templates = "classic"  # where are the templates?
+# What is your blog's name?
+name = "BlogName"
+# What is your blog about?
+description = "BlogDescription" 
+# your blog's url(ends without '/'), if you don't have one,  leave here blank
+url = "http://your-blog.org"
+# where are the templates?
+templates = "classic"
 
 [author]
 name = "me"  # better be your github's username

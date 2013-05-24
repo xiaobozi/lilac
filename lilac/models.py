@@ -3,13 +3,13 @@
 """models in lilac: Blog, Author, Post, Tag, Page"""
 
 
-from . import src_ext, out_ext, src_dir, out_dir
 from .exceptions import SourceDirectoryNotFound
+from . import src_ext, out_ext, src_dir, out_dir, charset
 
 from hashlib import md5
-from os.path import join
 from os import listdir as ls
 from os.path import exists
+from .utils import join
 
 
 class Blog(object):
@@ -184,12 +184,23 @@ class About(object):
 
     def __init__(self, markdown=None):
         self.markdown = markdown
+        self.src = join(src_dir, "about" + src_ext)
+        self.out = join(out_dir, "about" + out_ext)
+        self.template = "about.html"
 
     @property
     def html(self):
         """Render its markdown to html"""
         from .parser import parser
         return parser.markdown.render(self.markdown)
+
+    @property
+    def content(self):
+        """open source file and return the content"""
+        if exists(self.src):
+            return open(self.src).read().decode(charset)
+        else:
+            return u''
 
 
 class Tags(object):
@@ -210,3 +221,25 @@ class Archives(object):
     def __init__(self):
         self.template = "archives.html"
         self.out = join(out_dir, "archives" + out_ext)
+
+
+class Feed(object):
+    """the feed 'feed.atom'"""
+
+    size = 10
+
+    def __init__(self, feed=None):
+        self.feed = feed  # pyatom feed object
+        self.out = join(out_dir, "feed.atom")
+
+    def write(self):
+        """write feed to file"""
+        return open(self.out, "w").write(self.feed.to_string().encode(charset))
+
+
+class Page404(object):
+    """page 404.html"""
+
+    def __init__(self):
+        self.out = join(out_dir, "404" + out_ext)
+        self.template = "404.html"
