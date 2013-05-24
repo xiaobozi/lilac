@@ -89,6 +89,12 @@ class Post(object):
         return parser.markdown.render(self.markdown)
 
     @property
+    def summary(self):
+        """Return post's body's first 255 char's html"""
+        from .parser import parser
+        return parser.markdown.render(self.markdown[:255])
+
+    @property
     def src(self):
         """Return the post's source filepath"""
         return join(Post.src_dir, self.name + src_ext)

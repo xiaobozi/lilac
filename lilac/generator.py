@@ -186,10 +186,6 @@ class Generator(object):
     @step
     def render_pages(self, sender):
         """Render all pages to 'page/' with template 'page.html'"""
-        # set attribute `summary` to each post
-        for post in self.posts:
-            setattr(post, "summary", parser.markdown.render(post.markdown[:255]))
-
         mkdir_p(Page.out_dir)
 
         for page in self.pages:

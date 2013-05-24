@@ -6,11 +6,13 @@ It is - **a static blog generator**
 Featrues
 --------
 
-- Toml & Markdown(GFM) based
+- [Toml](https://github.com/mojombo/toml) & Markdown([GFM](http://github.github.com/github-flavored-markdown/)) based
 
 - 100% in Python
 
-- tags & feed support
+- tags & feed & templates support
+
+- jinja2 templating language
 
 - minimal blog
 
@@ -68,6 +70,12 @@ About the Name
 --------------
  
 `lilac` is `紫丁香` in chinese, they are everywhere in my university HIT.
+
+TODOs
+-----
+
+- Need plugins support?
+- docs for templates developers
 
 License
 -------
