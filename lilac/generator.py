@@ -91,6 +91,9 @@ class Generator(object):
         # send signal that generator was already initialized
         signals.initialized.send(self)
 
+    # make alias to initialize
+    generate = initialize
+
     @step
     def parse_posts(self, sender):
         """Parse posts and sort them by create time"""
@@ -228,4 +231,6 @@ class Generator(object):
     def render_page_404(self, sender):
         """Render 404 page to '404.html' with template '404.html' """
         self.render_to(self.page_404.out, self.page_404.template)
+        logger.success("404 rendered")
+
 generator = Generator()
