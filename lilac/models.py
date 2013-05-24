@@ -68,7 +68,8 @@ class Post(object):
 
     def __init__(
         self,
-        name=None, tags=None, title=None, datetime=None, markdown=None
+        name=None, tags=None, title=None, datetime=None, markdown=None,
+        **other_attrs
     ):
         self.name = name
         self.title = title
@@ -80,6 +81,8 @@ class Post(object):
         else:
             self.tags = tags
 
+        self.__dict__.update(other_attrs)
+
     @property
     def html(self):
         """Return the post's content's rendered markdown"""
@@ -87,6 +90,12 @@ class Post(object):
         # import issue
         from .parser import parser
         return parser.markdown.render(self.markdown)
+
+    @property
+    def summary(self):
+        """Return post's body's first 255 char's html"""
+        from .parser import parser
+        return parser.markdown.render(self.markdown[:255])
 
     @property
     def src(self):
