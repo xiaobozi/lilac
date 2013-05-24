@@ -132,6 +132,15 @@ class Generator(object):
             self.pages[-1].last = True
         logger.success("Pages composed")
 
+    def render_to(self, path, template, **data):
+        """shortcut to render data with template and then write to path.
+        Just add exception catch to renderer.render_to"""
+        try:
+            renderer.render_to(path, template, **data)
+        except JinjaTemplateNotFound as e:
+            logger.error(e.__doc__ + ": Template '%s'" % template)
+            sys.exit(1)  # template not found,  must exit the script
+
     def render_posts(self, sender):
         """Render all posts to 'post/' with template 'post.html'"""
         logger.info(self.render_posts.__doc__)
@@ -142,11 +151,7 @@ class Generator(object):
 
         for post in self.posts:
             out_path = join(posts_out_dir, post.name+out_ext)
-            try:
-                renderer.render_to(out_path, "post.html", post=post)
-            except RenderException as e:
-                logger.error(e.__doc__ + ": Template 'post.html'")
-                sys.exit(1)
+            self.render_to(out_path, "post.html", post=post)
 
         logger.success("Posts rendered")
 
@@ -160,12 +165,11 @@ class Generator(object):
 
         for tag in self.tags:
             out_path = join(tags_out_dir, tag.name + out_ext)
-            # TODO: Add try except
-            renderer.render_to(out_path, "tag.html", tag=tag)
+            self.render_to(out_path, "tag.html", tag=tag)
 
         # the 'tags.html'
         out_path = join(out_dir, "tags" + out_ext)
-        renderer.render_to(out_path, "tags.html", tags=self.tags)
+        self.render_to(out_path, "tags.html", tags=self.tags)
         logger.info("Tags rendered")
 
 
