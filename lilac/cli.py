@@ -25,7 +25,7 @@ def task(task_func):
 
 @task
 def deploy():
-    """deploy blog: classic/, src/post/helloworld.md, src/about.md, config.toml, Makefile"""
+    """deploy blog: classic/, src/post/sample.md, src/about.md, config.toml, Makefile"""
     lib_dir = dirname(__file__)  # this library's directroy
     res = join(lib_dir, "resources")
     classic = join(res, "classic")
@@ -34,7 +34,7 @@ def deploy():
     makefile_path = join(res, "Makefile")
     call(["mkdir", "-p", "src/post"])
     call(["touch", "src/about.md"])
-    call(["cp", sample_post, "src/post/helloworld.md"])
+    call(["cp", sample_post, "src/post/sample.md"])
     call(["cp", sample_config, "."])
     call(["cp", "-r", classic, "."])
     call(["cp", makefile_path, "."])

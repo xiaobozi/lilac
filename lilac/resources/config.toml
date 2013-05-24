@@ -14,3 +14,7 @@ templates = "classic"
 [author]
 name = "me"  # better be your github's username
 email = "me@some.com"  # your email address
+
+[disqus]
+# your disqus's short name for this blog
+shortname = "your-disqus-short-name"

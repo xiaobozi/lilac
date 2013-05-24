@@ -9,7 +9,7 @@ setup(
     description='A static blog generator.',
     license='MIT',
     keywords='static blog generator, markdown, toml, posts',
-    url='http://github.com/hit9/golb',
+    url='http://github.com/hit9/lilac',
     long_description=open('README.md').read(),
     packages=['lilac'],
     include_package_data = True,

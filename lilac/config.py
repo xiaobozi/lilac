@@ -26,6 +26,9 @@ class Config(object):
         'author': {
             'name': 'me',
             'email': 'me@some.com'
+        },
+        'disqus': {
+            'shortname': 'your-disqus_short-name'
         }
     }
 
