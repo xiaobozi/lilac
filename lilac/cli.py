@@ -7,6 +7,7 @@ import logging
 from os.path import join
 from os.path import dirname
 from .logger import logger
+from .server import run_server
 from . import version
 from .generator import generator
 from subprocess import call
@@ -75,6 +76,7 @@ def main():
   lilac deploy
   lilac build
   lilac clean
+  lilac server [<port>]
 
   Options:
     -h --help     show this help message
@@ -83,7 +85,8 @@ def main():
   Commands:
     deploy        deploy blog in current directroy
     build         build blog source to html
-    clean         remove files built by lilac"""
+    clean         remove files built by lilac
+    server        start a simple server here"""
 
     arguments = docopt(main.__doc__, version='lilac version: ' + version)
 
@@ -93,5 +96,11 @@ def main():
         clean()
     elif arguments["build"]:
         build()
+    elif arguments["server"]:
+        if arguments["<port>"]:
+            port = int(arguments["<port>"])
+        else:
+            port = 8000
+        run_server(port)
     else:
         exit(main.__doc__)
