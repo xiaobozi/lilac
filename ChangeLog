@@ -1,0 +1,13 @@
+v0.2.9
+------
+
+- add a server
+- use disqus coment
+- use signal to manage process
+- add makefile for users to manage blog
+
+v0.2.0
+-------
+
+- conf.toml => config.toml
+- remove plugin(blinker) support

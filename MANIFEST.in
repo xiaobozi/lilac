@@ -1,2 +1,3 @@
 include LICENSE-MIT README.md requirements.pip
+recursive-include lilac/resources *
 global-include *.py

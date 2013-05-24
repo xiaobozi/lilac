@@ -1,21 +1,21 @@
 from setuptools import setup
+from lilac import version
 
 setup(
-    name='golb',
-    version="0.1.3",
+    name='lilac',
+    version=version,
     author='hit9',
     author_email='nz2324@126.com',
-    description='minimal static blog generator for programmers. write posts in markdown and toml,\
-    render templates with jinja2',
+    description='A static blog generator.',
     license='MIT',
     keywords='static blog generator, markdown, toml, posts',
-    url='http://github.com/hit9/golb',
+    url='http://github.com/hit9/lilac',
     long_description=open('README.md').read(),
-    packages=['golb'],
+    packages=['lilac'],
     include_package_data = True,
     entry_points = {
         'console_scripts': [
-            'golb = golb.script:main'
+            'lilac = lilac.cli:main'
         ]
     },
     install_requires = open("requirements.pip").read().splitlines()

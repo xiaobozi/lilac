@@ -5,7 +5,9 @@ env/
 test/
 build/
 dist/
-golb.egg-info/
+lilac.egg-info/
 testing
 venv/
 test.py
+tests/
+test.md
