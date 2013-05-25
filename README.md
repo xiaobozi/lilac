@@ -1,11 +1,3 @@
-title = "lilac- a static blog generator that sucks less"
-
-datetime = "2013-05-25 16:15"
-
-tags = ["lilac"]
-
-----------
-
 lilac
 =====
 
