@@ -1,0 +1,20 @@
+# Configuration for this blog
+# it is written in Toml
+
+[blog]
+# What is your blog's name?
+name = "Make Difference"
+# What is your blog about?
+description = "Just lilac's demo site" 
+# your blog's url(ends without '/'), if you don't have one,  leave here blank
+url = "http://hit9.org/lilac"
+# where are the templates?
+templates = "classic"
+
+[author]
+name = "hit9"  # better be your github's username
+email = "nz2324@126.com"  # your email address
+
+[disqus]
+# your disqus's short name for this blog
+shortname = "followmyheart"

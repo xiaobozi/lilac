@@ -1,0 +1,160 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>lilac- a static blog generator that sucks less </title>
+    <link rel="stylesheet" href="/classic/static/css/layout.css" type="text/css" />
+    <link rel="stylesheet" href="/classic/static/css/post.css" type="text/css" />
+  </head>
+  <body>
+    <!-- 960px width container -->
+    <div class="container">
+      <!-- header -->
+      <div class="header">
+        <h1><a href="/">Make Difference</a></h1>
+        <h2>Just lilac's demo site</h2>
+        <div class="separator nav"><span><a href="/">Home</a> * <a href="/tags.html">Tags</a> * <a href="/archives.html">Archives</a> * <a href="/about.html">About</a> * <a href="/feed.atom">Rss</a> </span></div>
+        <p class="flourish"><img src="/classic/static/images/flourish.svg" height="60px" alt=""></p>
+      </div>
+      <div class="content">
+        <h1 class="title">lilac- a static blog generator that sucks less</h1>
+<p class="separator"><span class="date">May  25, 13</span></p>
+<div class="post-html"><h1>lilac</h1>
+
+<p>It is - <strong>a static blog generator</strong></p>
+
+<h2>Demo</h2>
+
+<p>demo site is on branch <a href="https://github.com/hit9/lilac/tree/gh-pages">gh-pages</a></p>
+
+<ul>
+<li><a href="http://hit9.org/lilac">http://hit9.org/lilac</a></li>
+</ul>
+
+<h2>Featrues</h2>
+
+<ul>
+<li><p><a href="https://github.com/mojombo/toml">Toml</a> &amp; Markdown(<a href="http://github.github.com/github-flavored-markdown/">GFM</a>) based</p></li>
+<li><p>100% in Python</p></li>
+<li><p>tags &amp; feed &amp; templates &amp; Code highlighting support</p></li>
+<li><p>jinja2 templating language</p></li>
+<li><p>minimal blog</p></li>
+</ul>
+
+<h2>Quick Start</h2>
+
+<ol>
+<li>install <code>lilac</code>:</li>
+</ol>
+
+                <div class="highlight">
+                  <pre><code>mkdir MyBlog &amp;&amp; cd MyBlog
+virtualenv venv
+. venv/bin/activate
+pip install git+git://github.com/hit9/lilac.git</code></pre>
+                </div>
+                
+<ol>
+<li>deploy your blog:</li>
+</ol>
+
+                <div class="highlight">
+                  <pre><code>lilac deploy</code></pre>
+                </div>
+                
+<p><code>lilac</code> generate you a <code>Makefile</code> to manage blog.</p>
+
+<ol>
+<li><p>edit <code>config.toml</code> to meet your needs.</p></li>
+<li><p>build blog:</p></li>
+</ol>
+
+                <div class="highlight">
+                  <pre><code>make build</code></pre>
+                </div>
+                
+<ol>
+<li>see your blog in action:</li>
+</ol>
+
+                <div class="highlight">
+                  <pre><code>make server</code></pre>
+                </div>
+                
+<p>preview htmls at <a href="http://0.0.0.0:8000">http://0.0.0.0:8000</a></p>
+
+<h2>Write a Post</h2>
+
+<p>To write a post, just follow the 3 simple steps:</p>
+
+<ol>
+<li><p>new a file in directory <code>src/post</code> , for example: <code>src/post/hello-world.md</code></p></li>
+<li><p>edit that file, write header in <a href="https://github.com/mojombo/toml">Toml</a> and
+write body in markdown, header and body are separated with a line <code>----</code></p></li>
+<li><p>run <code>make build</code> , and then preview under the &#39;&#39;cute&#39; server in your browser</p></li>
+</ol>
+
+<h2>OS Plat</h2>
+
+<p>Only works on *nix.</p>
+
+<blockquote>
+<p>windows doesn&#39;t count.</p>
+</blockquote>
+
+<h2>FAQ?</h2>
+
+<ul>
+<li>Don&#39;t forget to activate virtualenv environment - <code>. venv/bin/activate</code> before building</li>
+</ul>
+
+<h2>About the Name</h2>
+
+<p><code>lilac</code> is <code>紫丁香</code> in chinese, they are everywhere in my university HIT.</p>
+
+<h2>TODOs</h2>
+
+<ul>
+<li>Need plugins support?</li>
+<li>docs for templates developers</li>
+</ul>
+
+<h2>License</h2>
+
+<p>MIT</p>
+</div>
+<div class="tags">
+    <a href="/tag/lilac.html">lilac</a>
+  </div>
+<p class="separator"><span class="showsource"><a href="/src/post/lilac.md">Show Source</a></span></p>
+<div class="cut">* * *</div>
+<!-- Disqus Comment BEGIN -->
+    <div id="disqus_thread"></div>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'followmyheart'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+<!-- Disqus Comment END -->
+      </div>
+      <!-- sticky footer hack-->
+      <div class="footer-push"></div>
+    </div>
+    <div class="cut">* * *</div>
+    <div class="footer">
+      <p>
+                Copyright &copy; 2013 - hit9 Powered by <a href="https://github.com/hit9/lilac">lilac</a>
+              </p>
+    </div>
+    <a href="https://github.com/hit9"><img style="position: absolute; top: 0; right: 0; border: 0;z-index:12" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a>
+  </body>
+</html>

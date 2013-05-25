@@ -1,0 +1,116 @@
+@import base
+@import typo
+@import markdown
+
+/* handwriting fonts: Niconne */
+@font-face
+  font-family: 'Niconne'
+  font-style: normal
+  font-weight: 400
+  src: local('Niconne'), local('Niconne-Regular'), url(http://themes.googleusercontent.com/static/fonts/niconne/v3/Pt5YCk9yiMzehxqMoOcZoQ.woff) format('woff')
+
+/* fonts end */
+html,body
+  height: 100%
+  margin: 0
+  padding: 0
+
+body
+  font: 16px/1.6 'Georgia',serif
+  font-weight: normal
+  font-style: normal
+  color: #222
+
+a:link
+  color: $blue
+a:hover
+  color: $blue
+a:visited
+  color: $blue
+
+/* separator */
+.separator
+  width: 100%
+  border-bottom: 1px dotted $light-gray
+  text-align: center
+  height: 18px
+  margin-bottom: 15px
+
+.separator span
+  line-height: 20px
+  padding: 0 24px
+  background: white
+  display: inline-block
+  margin-top: 10px
+
+/* the date,use nice font  */
+.separator span.date  
+  font: 18px/20px 'Niconne', 'Georgia', serif
+
+.container
+  width: $width
+  /*sticky footer*/
+  min-height: 100%
+  height: auto  !important
+  height: 100%
+  margin: 0 auto -3em
+  /*sticky footer end*/
+
+.header
+  width: $width
+  /*be the center*/
+  margin: 0 auto
+  text-align: center
+  margin-bottom: 20px
+  /* blog'name */
+  h1
+    padding: 2.9em 0 .7em 0
+    a
+      font: 45px/1.5 'Niconne','Georgia',serif
+      color: $dark-gray
+      text-decoration: none
+  /* blog's description */
+  h2
+    color: $gray
+    text-align: right
+    font-size: 14px
+    font-style: italic
+  /*navigation bar*/
+  .nav
+    span
+      color: #aaa
+      letter-spacing: 2px
+    a
+      font: 21px/20px 'Niconne',"Georgia",serif
+      color: #222
+
+  .flourish
+    text-align: center
+    margin-top: 40px
+
+.content
+  padding: 8px
+  .post-html
+    margin-bottom: 15px
+
+/* the div for
+ * <div>***</div>
+ */
+.cut
+  color: #aaa
+  text-align: center
+  letter-spacing: 3px
+
+.footer,.footer-push
+  height: 3em
+
+.footer
+  position: relative
+  text-align: center
+  color: $gray
+  font-size: .8em
+  p
+    color: $gray
+    text-align: center
+    line-height: 1.5
+    padding: .4em 0
