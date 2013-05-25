@@ -16,7 +16,7 @@ Demo
 
 demo site is on branch [gh-pages](https://github.com/hit9/lilac/tree/gh-pages)
 
-- http://hit9.org/lilac
+- http://lilac.hit9.org
 
 Featrues
 --------
