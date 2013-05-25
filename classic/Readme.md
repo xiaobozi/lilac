@@ -6,7 +6,7 @@ templates for [lilac](https://github.com/hit9/lilac)
 Demo
 ----
 
-http://hit9.org
+http://lilac.hit9.org
 
 Developers
 ----------
