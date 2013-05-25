@@ -1,5 +1,5 @@
 @import base
-@import typo
+@import normalize
 @import markdown
 
 /* handwriting fonts: Niconne */
@@ -16,15 +16,20 @@ html,body
   padding: 0
 
 body
-  font: 16px/1.6 'Georgia',serif
+  // font: 12px/18px "Lucida Grande", "Lucida Sans Unicode", Helvetica, Arial, Verdana, sans-serif
+  font: 12px/18px 'Helvetica Neue',Helvetica,Arial,Sans-serif
+  background-color: transparent
+  color: #333
+  -webkit-font-smoothing: antialiased
   font-weight: normal
   font-style: normal
-  color: #222
 
 a:link
   color: $blue
+  text-decoration: none
 a:hover
   color: $blue
+  text-decoration: underline
 a:visited
   color: $blue
 
@@ -66,7 +71,7 @@ a:visited
   h1
     padding: 2.9em 0 .7em 0
     a
-      font: 45px/1.5 'Niconne','Georgia',serif
+      font: 48px/1.5 'Niconne','Georgia',serif
       color: $dark-gray
       text-decoration: none
   /* blog's description */
@@ -75,23 +80,32 @@ a:visited
     text-align: right
     font-size: 14px
     font-style: italic
+    font-weight: 400
   /*navigation bar*/
   .nav
     span
       color: #aaa
-      letter-spacing: 2px
+      letter-spacing: 5px
     a
-      font: 21px/20px 'Niconne',"Georgia",serif
+      font: 23px/20px 'Niconne',"Georgia",serif
       color: #222
+      letter-spacing: 2px
 
   .flourish
     text-align: center
-    margin-top: 40px
+    margin-top: 48px
 
 .content
   padding: 8px
+  font-size: 1.167em
+  line-height: 1.4285em
+  word-spacing: -1px
+  color: #333
+  -webkit-font-smoothing: antialiased
   .post-html
     margin-bottom: 15px
+  span.showsource
+    font-size: 12px
 
 /* the div for
  * <div>***</div>

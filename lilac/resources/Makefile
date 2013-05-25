@@ -3,8 +3,8 @@
 help:
 	@echo "Help message:"
 	@echo "  build  -  to build markdown to html"
-	@echo "  clean  -  to remove htmls built by lilac"
 	@echo "  server -  to start a simple web server here"
+	@echo "  clean  -  to remove htmls built by lilac"
 
 build:
 	lilac build

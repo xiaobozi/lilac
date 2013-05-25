@@ -3,9 +3,9 @@
 
 [blog]
 # What is your blog's name?
-name = "BlogName"
+name = "Make Difference"
 # What is your blog about?
-description = "BlogDescription" 
+description = "Here goes your blog's description" 
 # your blog's url(ends without '/'), if you don't have one,  leave here blank
 url = "http://your-blog.org"
 # where are the templates?
