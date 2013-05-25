@@ -4,7 +4,7 @@ help:
 	@echo "Help message:"
 	@echo "  build  -  to build markdown to html"
 	@echo "  clean  -  to remove htmls built by lilac"
-	@echo "  server -  to start a simple wev server here"
+	@echo "  server -  to start a simple web server here"
 
 build:
 	lilac build

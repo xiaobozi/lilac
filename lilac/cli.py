@@ -4,7 +4,7 @@
 
 
 import logging
-from os.path import join
+from .utils import join
 from os.path import dirname
 from .logger import logger
 from .server import run_server
@@ -29,16 +29,7 @@ def deploy():
     """deploy blog: classic/, src/post/sample.md, src/about.md, config.toml, Makefile"""
     lib_dir = dirname(__file__)  # this library's directroy
     res = join(lib_dir, "resources")
-    classic = join(res, "classic")
-    sample_post = join(res, "sample.md")
-    sample_config = join(res, "config.toml")
-    makefile_path = join(res, "Makefile")
-    call(["mkdir", "-p", "src/post"])
-    call(["touch", "src/about.md"])
-    call(["cp", sample_post, "src/post/sample.md"])
-    call(["cp", sample_config, "."])
-    call(["cp", "-r", classic, "."])
-    call(["cp", makefile_path, "."])
+    call("rsync -aqu " + join(res, "*") + " .", shell=True)
     logger.success("deploy done")
     logger.info("Please edit config.toml to meet tour needs")
     logger.info("Run 'make build' to build blog to htmls")
