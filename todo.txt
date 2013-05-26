@@ -2,3 +2,4 @@ lilac
 -----
 -     more temaplates's
 -     add about and config.toml to watch
+-     need to init about,blog and author in models?
