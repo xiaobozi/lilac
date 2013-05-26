@@ -1,13 +1,15 @@
 # coding=utf8
 
-"""Run a server and start watch posts for changes to auto rebuild,
-as a option, we can choose to not auto"""
+"""Run a server and start to watch posts for changes to auto
+rebuild as a default option, we can choose to not watch"""
 
 
 from .utils import join
-from .models import Post
+from .models import Post, About
+from .config import config
 from os import listdir as ls
 from os import stat
+from os.path import exists
 from time import sleep
 from threading import Thread
 from SocketServer import ThreadingMixIn
@@ -42,9 +44,14 @@ class Server(object):
             self.shutdown()
 
     def get_files_stat(self):
-        posts = Post.glob_src_files().keys()  # posts'path
-        # TODO: add about.md to this, add config.toml to this
-        files = dict((p, stat(p).st_mtime) for p in posts)
+        paths = Post.glob_src_files().keys()  # posts'path
+        # about
+        if exists(generator.about.src):
+            paths.append(generator.about.src)
+        # config.toml
+        if exists(config.filepath):
+            paths.append(config.filepath)
+        files = dict((p, stat(p).st_mtime) for p in paths)
         return files
 
     def watch_files(self):
@@ -59,6 +66,7 @@ class Server(object):
                 except SystemExit:
                     logger.error("Error occurred, server shut down")
                     self.shutdown()
+                logger.success("Rebuild success")
                 self.files_stat = files_stat  # update files' stat
 
     def run(self, port=8888, watch=True):
