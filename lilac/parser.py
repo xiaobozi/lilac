@@ -16,26 +16,34 @@ from misaka import HtmlRenderer, SmartyPants
 from pygments import highlight
 from pygments.lexers import get_lexer_by_name
 from pygments.formatters import HtmlFormatter
+from pygments.util import ClassNotFound
 
 
 class ColorRender(HtmlRenderer, SmartyPants):
     """misaka render with color codes feature"""
 
+    def _code_no_lexer(self, text):
+        # encode to utf8 string
+        text = text.encode(charset).strip()
+        return(
+            """
+            <div class="highlight">
+              <pre><code>%s</code></pre>
+            </div>
+            """ % houdini.escape_html(text)
+        )
+
     def block_code(self, text, lang):
         """text: unicode text to render"""
 
         if not lang:
-            # encode to utf8 string
-            text = text.encode(charset).strip()
-            return (
-                """
-                <div class="highlight">
-                  <pre><code>%s</code></pre>
-                </div>
-                """ % houdini.escape_html(text)
-            )
+            return self._code_no_lexer(text)
 
-        lexer = get_lexer_by_name(lang, stripall=True)
+        try:
+            lexer = get_lexer_by_name(lang, stripall=True)
+        except ClassNotFound:  # lexer not found, use plain text
+            return self._code_no_lexer(text)
+
         formatter = HtmlFormatter()
 
         return highlight(text, lexer, formatter)
