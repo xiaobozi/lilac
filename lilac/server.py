@@ -44,13 +44,15 @@ class Server(object):
             self.shutdown()
 
     def get_files_stat(self):
-        paths = Post.glob_src_files().keys()  # posts'path
+        # posts
+        paths = Post.glob_src_files().keys()
         # about
         if exists(generator.about.src):
             paths.append(generator.about.src)
         # config.toml
         if exists(config.filepath):
             paths.append(config.filepath)
+        # files - a <filepath to updated time> dict
         files = dict((p, stat(p).st_mtime) for p in paths)
         return files
 
@@ -61,11 +63,13 @@ class Server(object):
             files_stat = self.get_files_stat()
             if self.files_stat != files_stat:
                 logger.info("Changes detected, start rebuilding..")
+
                 try:
                     generator.re_generate()
-                except SystemExit:
+                except SystemExit:  # catch sys.exit, it means fatal error
                     logger.error("Error occurred, server shut down")
                     self.shutdown()
+
                 logger.success("Rebuild success")
                 self.files_stat = files_stat  # update files' stat
 
