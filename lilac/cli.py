@@ -7,7 +7,8 @@ import logging
 from .utils import join
 from os.path import dirname
 from .logger import logger
-from .server import run_server
+from .server import server
+from watcher import watcher
 from . import version
 from .generator import generator
 from subprocess import call
@@ -67,17 +68,18 @@ def main():
   lilac deploy
   lilac build
   lilac clean
-  lilac server [<port>]
+  lilac server [<port>] [--no-watch]
 
   Options:
     -h --help     show this help message
     -v --version  show version
+    --no-watch    only start server, don't watch
 
   Commands:
     deploy        deploy blog in current directroy
     build         build blog source to html
     clean         remove files built by lilac
-    server        start a simple server here"""
+    server        start web server here and watch for changes to rebuild"""
 
     arguments = docopt(main.__doc__, version='lilac version: ' + version)
 
@@ -91,7 +93,12 @@ def main():
         if arguments["<port>"]:
             port = int(arguments["<port>"])
         else:
-            port = 8000
-        run_server(port)
+            port = 8888  # default 8888
+
+        if arguments["--no-watch"]:
+            watch = False
+        else:
+            watch = True
+        server.run(port, watch)
     else:
         exit(main.__doc__)

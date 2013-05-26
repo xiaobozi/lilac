@@ -22,6 +22,12 @@ class Generator(object):
     def __init__(self):
         """init attributes to store runtime data"""
         # initialize them the default value.
+        self.reset()
+        # register signals
+        self.register_signals()
+
+    def reset(self):
+        """reset all posts, tags, pages .etc."""
         self.posts = []
         self.tags = []
         self.pages = []
@@ -33,8 +39,6 @@ class Generator(object):
         self.feed = Feed()
         self.page_404 = Page404()
         self.config = config.default
-        # register signals
-        self.register_signals()
 
     def register_signals(self):
         """Register all signals in this process"""
@@ -91,6 +95,11 @@ class Generator(object):
 
     # make alias to initialize
     generate = initialize
+
+    def re_generate(self):
+        """Reset generator's data and build"""
+        self.reset()
+        self.generate()
 
     @step
     def parse_posts(self, sender):
