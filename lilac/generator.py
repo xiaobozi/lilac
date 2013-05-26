@@ -10,7 +10,8 @@ from .renderer import renderer
 from .exceptions import *
 from .logger import logger, logging
 from .utils import chunks, update_nested_dict, mkdir_p
-from .models import Blog, Author, Post, Tag, Page, About, Tags, Archives, Feed, Page404
+from .models import Post, Tag, Page
+from .models import blog, author, about, tags, archives, feed, page_404
 
 import sys
 from datetime import datetime
@@ -31,13 +32,13 @@ class Generator(object):
         self.posts = []
         self.tags = []
         self.pages = []
-        self.about = About()
-        self.blog = Blog()
-        self.author = Author()
-        self._tags = Tags()
-        self.archives = Archives()
-        self.feed = Feed()
-        self.page_404 = Page404()
+        self.about = about
+        self.blog = blog
+        self.author = author
+        self._tags = tags
+        self.archives = archives
+        self.feed = feed
+        self.page_404 = page_404
         self.config = config.default
 
     def register_signals(self):

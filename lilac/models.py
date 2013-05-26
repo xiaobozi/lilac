@@ -29,6 +29,9 @@ class Blog(object):
         self.templates = templates
 
 
+blog = Blog()
+
+
 class Author(object):
     """
     The blog's author, only one.
@@ -48,6 +51,8 @@ class Author(object):
         """it's md5(author.email), author's gravatar_id"""
         return md5(self.email).hexdigest()
 
+
+author = Author()
 
 class Post(object):
     """
@@ -212,6 +217,8 @@ class About(object):
             return u''
 
 
+about = About()
+
 class Tags(object):
     """
     the 'tags.html' of this blog, it displays all tags
@@ -223,6 +230,8 @@ class Tags(object):
         self.out = join(out_dir, "tags" + out_ext)
 
 
+tags = Tags()
+
 class Archives(object):
     """the 'archives.html' of this blog, it displays all posts
     in single page."""
@@ -231,6 +240,8 @@ class Archives(object):
         self.template = "archives.html"
         self.out = join(out_dir, "archives" + out_ext)
 
+
+archives = Archives()
 
 class Feed(object):
     """the feed 'feed.atom'"""
@@ -246,9 +257,14 @@ class Feed(object):
         return open(self.out, "w").write(self.feed.to_string().encode(charset))
 
 
+feed = Feed()
+
 class Page404(object):
     """page 404.html"""
 
     def __init__(self):
         self.out = join(out_dir, "404" + out_ext)
         self.template = "404.html"
+
+
+page_404 = Page404()

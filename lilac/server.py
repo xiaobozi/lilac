@@ -5,7 +5,7 @@ rebuild as a default option, we can choose to not watch"""
 
 
 from .utils import join
-from .models import Post, About
+from .models import Post, about
 from .config import config
 from os import listdir as ls
 from os import stat
@@ -47,8 +47,8 @@ class Server(object):
         # posts
         paths = Post.glob_src_files().keys()
         # about
-        if exists(generator.about.src):
-            paths.append(generator.about.src)
+        if exists(about.src):
+            paths.append(about.src)
         # config.toml
         if exists(config.filepath):
             paths.append(config.filepath)
