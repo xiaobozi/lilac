@@ -8,6 +8,7 @@ import logging
 from logging import Formatter
 from logging import getLogger
 from logging import StreamHandler
+from datetime import datetime
 
 
 class ColoredFormatter(Formatter):
@@ -25,7 +26,10 @@ class ColoredFormatter(Formatter):
             'DEBUG': 'bggrey',
         }
         color = mapping.get(record.levelname, 'white')
-        return colored('[' + record.levelname + ']', color) + ' ' + message
+
+        level = colored('['+ record.levelname + ']', color)
+        time = colored(datetime.now().strftime("(%H:%M:%S)"), "magenta")
+        return " ".join([level, time, message])
 
 
 logger = getLogger('lilac')

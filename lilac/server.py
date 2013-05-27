@@ -51,7 +51,7 @@ class Server(object):
             logger.error(str(e))
             sys.exit(1)
 
-        logger.info("Serve at http://0.0.0.0:%d(ctrl-c to stop it) ..." % port)
+        logger.info("Serve at http://0.0.0.0:%d (ctrl-c to stop it) ..." % port)
 
         try:
             self.server.serve_forever()
