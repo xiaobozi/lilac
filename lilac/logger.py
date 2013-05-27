@@ -27,7 +27,7 @@ class ColoredFormatter(Formatter):
         }
         color = mapping.get(record.levelname, 'white')
 
-        level = colored('['+ record.levelname + ']', color)
+        level = colored('%-8s' % record.levelname, color)
         time = colored(datetime.now().strftime("(%H:%M:%S)"), "magenta")
         return " ".join([level, time, message])
 

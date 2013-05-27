@@ -19,14 +19,14 @@ class Blog(object):
       name        unicode     blog's name
       description unicode     blog's description
       url         str         blog's site url
-      templates   str         which set of templates to use
+      theme   str             which theme to use
     """
 
-    def __init__(self, name=None, description=None, url=None, templates=None):
+    def __init__(self, name=None, description=None, url=None, theme=None):
         self.name = name
         self.description = description
         self.url = url
-        self.templates = templates
+        self.theme = theme
 
 
 blog = Blog()

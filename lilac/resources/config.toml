@@ -8,8 +8,8 @@ name = "Make Difference"
 description = "Here goes your blog's description" 
 # your blog's url(ends without '/'), if you don't have one,  leave here blank
 url = "http://your-blog.org"
-# where are the templates?
-templates = "classic"
+# which theme to use?
+theme = "classic"
 
 [author]
 name = "me"  # better be your github's username

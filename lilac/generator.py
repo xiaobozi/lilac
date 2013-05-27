@@ -89,7 +89,7 @@ class Generator(object):
             author=self.author,
             config=self.config,
         )
-        renderer.initialize(self.blog.templates, jinja_global_data)
+        renderer.initialize(self.blog.theme, jinja_global_data)
         logger.success("Generator initialized")
         # send signal that generator was already initialized
         signals.initialized.send(self)
