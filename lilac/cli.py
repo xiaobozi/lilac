@@ -8,8 +8,7 @@ import sys
 from .utils import join
 from os.path import dirname
 from .logger import logger
-from .builder import builder
-from watcher import watcher
+from .server import server
 from . import version
 from .generator import generator
 from subprocess import call
@@ -58,29 +57,25 @@ def clean():
     logger.success("clean done")
 
 
-@task
-def build(watch, server, port):
-    builder.run(watch, server, port)
-
-
 def main():
     """Usage:
   lilac [-h|-v]
-  lilac build [--watch] [--server] [<port>]
+  lilac build
   lilac deploy
   lilac clean
+  lilac serve [<port>] [--watch]
 
 Options:
   -h --help     show this help message
   -v --version  show version
   --watch       watch source files for changes
-  --server      start a server here
   <port>        which port for server to use(default: 8888)
 
 Commands:
   deploy        deploy blog in current directroy
   build         build source files to htmls
-  clean         remove files built by lilac"""
+  clean         remove files built by lilac
+  serve         start a web server, as a option, start watching"""
 
     arguments = docopt(main.__doc__, version='lilac version: ' + version)
 
@@ -89,19 +84,21 @@ Commands:
     elif arguments["clean"]:
         clean()
     elif arguments["build"]:
-        watch = arguments["--watch"]
-        server = arguments["--server"]
+        generator.generate()
+    elif arguments["serve"]:
+
         port_s = arguments["<port>"]
 
         if not port_s:
             port = 8888
-        else:  # check if port is an integer
+        else:
             try:
                 port = int(port_s)
             except ValueError:
                 logger.error("Error format of argument 'port': '%s'" % port_s)
                 sys.exit(1)
 
-        build(watch, server, port)
+        server.run(arguments["--watch"], port)
+
     else:
         exit(main.__doc__)

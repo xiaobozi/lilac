@@ -1,6 +1,6 @@
 # coding=utf8
 
-"""builder for lilac"""
+"""Server for lilac, web server and watcher"""
 
 from .utils import join
 from .models import Post, about
@@ -27,7 +27,7 @@ class MultiThreadedHTTPServer(ThreadingMixIn, HTTPServer):
     pass
 
 
-class Builder(object):
+class Server(object):
     """To build source to html, optional, can watch files for
     changes to auto rebuild , or start a web server here the same time"""
 
@@ -101,17 +101,13 @@ class Builder(object):
             logger.info("^C received, shutting down watcher")
             self.shutdown_watcher()
 
-    def run(self, watch=False, server=False, port=8888):
+    def run(self, watch=False, port=8888):
         """start building blog, options: run a server, start watching
         changes"""
         if watch:  # if watch, start a thread to watch
             self.watcher.start()
 
-        if server:  # if server, start server threading
-            self.run_server(port)
-
-        if not watch and not server:  # just build for once
-            generator.generate()
+        self.run_server(port)
 
     def shutdown_server(self):
         """shut down the web server"""
@@ -123,4 +119,4 @@ class Builder(object):
         self.watcher.join()
 
 
-builder = Builder()
+server = Server()
