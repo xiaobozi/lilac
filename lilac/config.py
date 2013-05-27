@@ -1,6 +1,6 @@
 # coding=utf8
 
-"""Configuration manager for lilac, config is in toml"""
+"""Configuration manager, config is in toml"""
 
 from . import charset
 from .exceptions import ConfigSyntaxError
@@ -21,7 +21,7 @@ class Config(object):
             'name': 'Blog\'s name',
             'description': 'Blog\'s description',
             'url': 'http://your-site.com',
-            'templates': 'classic'
+            'theme': 'classic'
         },
         'author': {
             'name': 'me',

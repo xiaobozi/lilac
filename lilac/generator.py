@@ -10,7 +10,8 @@ from .renderer import renderer
 from .exceptions import *
 from .logger import logger, logging
 from .utils import chunks, update_nested_dict, mkdir_p
-from .models import Blog, Author, Post, Tag, Page, About, Tags, Archives, Feed, Page404
+from .models import Post, Tag, Page
+from .models import blog, author, about, tags, archives, feed, page_404
 
 import sys
 from datetime import datetime
@@ -22,19 +23,23 @@ class Generator(object):
     def __init__(self):
         """init attributes to store runtime data"""
         # initialize them the default value.
+        self.reset()
+        # register signals
+        self.register_signals()
+
+    def reset(self):
+        """reset all posts, tags, pages .etc."""
         self.posts = []
         self.tags = []
         self.pages = []
-        self.about = About()
-        self.blog = Blog()
-        self.author = Author()
-        self._tags = Tags()
-        self.archives = Archives()
-        self.feed = Feed()
-        self.page_404 = Page404()
+        self.about = about
+        self.blog = blog
+        self.author = author
+        self._tags = tags
+        self.archives = archives
+        self.feed = feed
+        self.page_404 = page_404
         self.config = config.default
-        # register signals
-        self.register_signals()
 
     def register_signals(self):
         """Register all signals in this process"""
@@ -84,13 +89,18 @@ class Generator(object):
             author=self.author,
             config=self.config,
         )
-        renderer.initialize(self.blog.templates, jinja_global_data)
+        renderer.initialize(self.blog.theme, jinja_global_data)
         logger.success("Generator initialized")
         # send signal that generator was already initialized
         signals.initialized.send(self)
 
     # make alias to initialize
     generate = initialize
+
+    def re_generate(self):
+        """Reset generator's data and build"""
+        self.reset()
+        self.generate()
 
     @step
     def parse_posts(self, sender):
@@ -210,14 +220,19 @@ class Generator(object):
     def generate_feed(self, sender):
         """Generate feed for first 10 posts to 'feed.atom'"""
         for post in self.posts[:self.feed.size]:
-            self.feed.feed.add(
-                title=post.title,
-                content=post.html,
-                content_type="html",
-                author=self.author.name,
-                url=self.blog.url + "/" + post.out,
-                updated=post.datetime
-            )
+            try:
+                self.feed.feed.add(
+                    title=post.title,
+                    content=post.html,
+                    content_type="html",
+                    author=self.author.name,
+                    url=self.blog.url + "/" + post.out,
+                    updated=post.datetime
+                )
+            except Exception as e:
+                logger.warning(str(e))
+                pass  # skip
+
         self.feed.write()
         logger.success("Feed generated")
 
