@@ -3,3 +3,4 @@ lilac
 -     more temaplates's
 - [x] add about and config.toml to watch
 - [x] need to init about,blog and author in models?
+-     exception capture for port

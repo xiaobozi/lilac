@@ -4,10 +4,11 @@
 
 
 import logging
+import sys
 from .utils import join
 from os.path import dirname
 from .logger import logger
-from .server import server
+from .builder import builder
 from watcher import watcher
 from . import version
 from .generator import generator
@@ -21,7 +22,7 @@ def task(task_func):
         logger.setLevel(logging.INFO)
         if task_func.__doc__:
             logger.info(task_func.__doc__)
-        return task_func()
+        return task_func(*args, **kwargs)
     return wrapper
 
 
@@ -58,28 +59,28 @@ def clean():
 
 
 @task
-def build():
-    generator.generate()
+def build(watch, server, port):
+    builder.run(watch, server, port)
 
 
 def main():
     """Usage:
   lilac [-h|-v]
+  lilac build [--watch] [--server] [<port>]
   lilac deploy
-  lilac build
   lilac clean
-  lilac server [<port>] [--no-watch]
 
-  Options:
-    -h --help     show this help message
-    -v --version  show version
-    --no-watch    only start server, don't watch
+Options:
+  -h --help     show this help message
+  -v --version  show version
+  --watch       watch source files for changes
+  --server      start a server here
+  <port>        which port for server to use(default: 8888)
 
-  Commands:
-    deploy        deploy blog in current directroy
-    build         build blog source to html
-    clean         remove files built by lilac
-    server        start web server here and watch for changes to rebuild"""
+Commands:
+  deploy        deploy blog in current directroy
+  build         build source files to htmls
+  clean         remove files built by lilac"""
 
     arguments = docopt(main.__doc__, version='lilac version: ' + version)
 
@@ -88,17 +89,19 @@ def main():
     elif arguments["clean"]:
         clean()
     elif arguments["build"]:
-        build()
-    elif arguments["server"]:
-        if arguments["<port>"]:
-            port = int(arguments["<port>"])
-        else:
-            port = 8888  # default 8888
+        watch = arguments["--watch"]
+        server = arguments["--server"]
+        port_s = arguments["<port>"]
 
-        if arguments["--no-watch"]:
-            watch = False
-        else:
-            watch = True
-        server.run(port, watch)
+        if not port_s:
+            port = 8888
+        else:  # check if port is an integer
+            try:
+                port = int(port_s)
+            except ValueError:
+                logger.error("Error format of argument 'port': '%s'" % port_s)
+                sys.exit(1)
+
+        build(watch, server, port)
     else:
         exit(main.__doc__)

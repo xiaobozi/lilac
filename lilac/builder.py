@@ -1,12 +1,14 @@
 # coding=utf8
 
-"""Run a server and start to watch posts for changes to auto
-rebuild as a default option, we can choose to not watch"""
-
+"""builder for lilac"""
 
 from .utils import join
 from .models import Post, about
 from .config import config
+from .logger import logger
+from .generator import generator
+
+import logging
 from os import listdir as ls
 from os import stat
 from os.path import exists
@@ -15,23 +17,28 @@ from threading import Thread
 from SocketServer import ThreadingMixIn
 from BaseHTTPServer import HTTPServer
 from SimpleHTTPServer import SimpleHTTPRequestHandler as handler
-import logging
-from .logger import logger
-from .generator import generator
 
 
 class MultiThreadedHTTPServer(ThreadingMixIn, HTTPServer):
     """Multiple threaded http server"""
+    # TODO: standard the format the sever logging
     pass
 
 
-class Server(object):
-    """Start a web server at some port(default: 8888), and watch to rebuild"""
+class Builder(object):
+    """To build source to html, optional, can watch files for
+    changes to auto rebuild , or start a web server here the same time"""
 
     def __init__(self):
-        self.files_stat = {}   # init a empty filepath to stat dic
+        # files_stat: filepath to file's updated time dict
+        self.files_stat = {}
+        # server: the server instance initialized from MultiThreadedHTTPServer
         self.server = None
-        logger.setLevel(logging.INFO)  # set logger level to info
+        # watcher: the thread to watch files for changes
+        self.watcher = Thread(target=self.watch_files)
+        self.watcher.daemon = True
+        # set logger level to info
+        logger.setLevel(logging.INFO)
 
     def run_server(self, port=8888):
         """run a server binding to port(default 8888)"""
@@ -39,11 +46,13 @@ class Server(object):
         logger.info("Serve at 0.0.0.0:%d(ctrl-c to stop it) ..." % port)
         try:
             self.server.serve_forever()
+            # add exception catch for address already used
         except KeyboardInterrupt:
             logger.info("^C received, shutting down server")
-            self.shutdown()
+            self.shutdown_server()
 
     def get_files_stat(self):
+        """Get current filepath to file updated time dict"""
         # posts
         paths = Post.glob_src_files().keys()
         # about
@@ -68,24 +77,26 @@ class Server(object):
                     generator.re_generate()
                 except SystemExit:  # catch sys.exit, it means fatal error
                     logger.error("Error occurred, server shut down")
-                    self.shutdown()
+                    self.shutdown_server()
 
                 logger.success("Rebuild success")
                 self.files_stat = files_stat  # update files' stat
 
-    def run(self, port=8888, watch=True):
-        """run a server here, as a defalut option, start watching changes
-        to rebuild"""
-        if watch:
-            watcher_thread = Thread(target=self.watch_files)
-            watcher_thread.daemon = True
-            watcher_thread.start()
-        self.run_server(port)
+    def run(self, watch=False, server=False, port=8888):
+        """start building blog, options: run a server, start watching
+        changes"""
+        if watch:  # if watch, start a thread to watch
+            self.watcher.start()
 
-    def shutdown(self):
-        """shut down the server"""
+        if server:  # if server, start server threading
+            self.run_server(port)
+
+        if not watch and not server:  # just build for once
+            generator.generate()
+
+    def shutdown_server(self):
+        """shut down the web server"""
         self.server.shutdown()
         self.server.socket.close()
 
-
-server = Server()
+builder = Builder()
