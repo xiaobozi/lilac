@@ -220,14 +220,19 @@ class Generator(object):
     def generate_feed(self, sender):
         """Generate feed for first 10 posts to 'feed.atom'"""
         for post in self.posts[:self.feed.size]:
-            self.feed.feed.add(
-                title=post.title,
-                content=post.html,
-                content_type="html",
-                author=self.author.name,
-                url=self.blog.url + "/" + post.out,
-                updated=post.datetime
-            )
+            try:
+                self.feed.feed.add(
+                    title=post.title,
+                    content=post.html,
+                    content_type="html",
+                    author=self.author.name,
+                    url=self.blog.url + "/" + post.out,
+                    updated=post.datetime
+                )
+            except Exception as e:
+                logger.warning(str(e))
+                pass  # skip
+
         self.feed.write()
         logger.success("Feed generated")
 
