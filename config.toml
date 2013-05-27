@@ -8,8 +8,8 @@ name = "Make Difference"
 description = "Just lilac's demo site" 
 # your blog's url(ends without '/'), if you don't have one,  leave here blank
 url = "http://hit9.org/lilac"
-# where are the templates?
-templates = "classic"
+# which theme to use?
+theme = "classic"
 
 [author]
 name = "hit9"  # better be your github's username
