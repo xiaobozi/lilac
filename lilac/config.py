@@ -1,6 +1,6 @@
 # coding=utf8
 
-"""Configuration manager for lilac, config is in toml"""
+"""Configuration manager, config is in toml"""
 
 from . import charset
 from .exceptions import ConfigSyntaxError

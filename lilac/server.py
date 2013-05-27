@@ -1,6 +1,6 @@
 # coding=utf8
 
-"""Server for lilac, web server and watcher"""
+"""web server and watcher"""
 
 from .utils import join
 from .models import Post, about
@@ -21,16 +21,18 @@ from BaseHTTPServer import HTTPServer
 from BaseHTTPServer import BaseHTTPRequestHandler
 from SimpleHTTPServer import SimpleHTTPRequestHandler
 
+
 class Handler(SimpleHTTPRequestHandler):
     """Our own http handler"""
 
     def log_message(self, format, *args):
-        logger.info("%s - %s" % (self.address_string(), format %args))
+        logger.info("%s - %s" % (
+            self.address_string(), format % args
+        ))
 
 
 class MultiThreadedHTTPServer(ThreadingMixIn, HTTPServer):
     """Multiple threaded http server"""
-    # TODO: standard the format the sever logging
     pass
 
 
@@ -45,7 +47,8 @@ class Server(object):
         self.server = None
         # watcher: the thread to watch files for changes
         self.watcher = Thread(target=self.watch_files)
-        self.watcher.daemon = True  # this tell thread to terminate when the main process ends
+        # this tell thread to terminate when the main process ends
+        self.watcher.daemon = True
 
         logger.setLevel(logging.INFO)
 
@@ -81,8 +84,8 @@ class Server(object):
         return files
 
     def watch_files(self):
-        """watch files for changes, if changed, rebuild blog. this thread will quit if
-        the main process ends"""
+        """watch files for changes, if changed, rebuild blog. this thread
+        will quit if the main process ends"""
 
         try:
             while 1:

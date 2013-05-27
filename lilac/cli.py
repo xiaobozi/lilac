@@ -1,6 +1,6 @@
 # coding=utf8
 
-"""cli interface for lilac"""
+"""cli interface"""
 
 
 import logging
