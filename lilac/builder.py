@@ -8,7 +8,9 @@ from .config import config
 from .logger import logger
 from .generator import generator
 
+import sys
 import logging
+import socket
 from os import listdir as ls
 from os import stat
 from os.path import exists
@@ -36,17 +38,23 @@ class Builder(object):
         self.server = None
         # watcher: the thread to watch files for changes
         self.watcher = Thread(target=self.watch_files)
-        self.watcher.daemon = True
-        # set logger level to info
+        self.watcher.daemon = True  # this tell thread to terminate when the main process ends
+
         logger.setLevel(logging.INFO)
 
     def run_server(self, port=8888):
         """run a server binding to port(default 8888)"""
-        self.server = MultiThreadedHTTPServer(('0.0.0.0', port), handler)
-        logger.info("Serve at 0.0.0.0:%d(ctrl-c to stop it) ..." % port)
+
+        try:
+            self.server = MultiThreadedHTTPServer(('0.0.0.0', port), handler)
+        except socket.error, e:  # failed to bind port
+            logger.error(str(e))
+            sys.exit(1)
+
+        logger.info("Serve at http://0.0.0.0:%d(ctrl-c to stop it) ..." % port)
+
         try:
             self.server.serve_forever()
-            # add exception catch for address already used
         except KeyboardInterrupt:
             logger.info("^C received, shutting down server")
             self.shutdown_server()
@@ -66,21 +74,32 @@ class Builder(object):
         return files
 
     def watch_files(self):
-        """watch files for changes, if changed, rebuild blog"""
-        while 1:
-            sleep(1)
-            files_stat = self.get_files_stat()
-            if self.files_stat != files_stat:
-                logger.info("Changes detected, start rebuilding..")
+        """watch files for changes, if changed, rebuild blog. this thread will quit if
+        the main process ends"""
 
-                try:
-                    generator.re_generate()
-                except SystemExit:  # catch sys.exit, it means fatal error
-                    logger.error("Error occurred, server shut down")
-                    self.shutdown_server()
+        try:
+            while 1:
+                sleep(1.5)  # checkout every 1.5s
 
-                logger.success("Rebuild success")
-                self.files_stat = files_stat  # update files' stat
+                files_stat = self.get_files_stat()
+
+                if self.files_stat != files_stat:
+                    logger.info("Changes detected, start rebuilding..")
+
+                    try:
+                        generator.re_generate()
+                    except SystemExit:  # catch sys.exit, it means fatal error
+                        logger.error("Error occurred, server shut down")
+                        self.shutdown_server()
+
+                    logger.success("Rebuild success")
+                    self.files_stat = files_stat  # update files' stat
+        except KeyboardInterrupt:
+            # I dont know,  but this exception won't be catched
+            # because absolutly each KeyboardInterrupt is catched by
+            # the server thread, which will terminate this thread the same time
+            logger.info("^C received, shutting down watcher")
+            self.shutdown_watcher()
 
     def run(self, watch=False, server=False, port=8888):
         """start building blog, options: run a server, start watching
@@ -98,5 +117,10 @@ class Builder(object):
         """shut down the web server"""
         self.server.shutdown()
         self.server.socket.close()
+
+    def shutdown_watcher(self):
+        """shut down the watcher thread"""
+        self.watcher.join()
+
 
 builder = Builder()
