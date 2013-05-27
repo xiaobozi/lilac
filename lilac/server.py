@@ -18,7 +18,14 @@ from time import sleep
 from threading import Thread
 from SocketServer import ThreadingMixIn
 from BaseHTTPServer import HTTPServer
-from SimpleHTTPServer import SimpleHTTPRequestHandler as handler
+from BaseHTTPServer import BaseHTTPRequestHandler
+from SimpleHTTPServer import SimpleHTTPRequestHandler
+
+class Handler(SimpleHTTPRequestHandler):
+    """Our own http handler"""
+
+    def log_message(self, format, *args):
+        logger.info("%s - %s" % (self.address_string(), format %args))
 
 
 class MultiThreadedHTTPServer(ThreadingMixIn, HTTPServer):
@@ -46,7 +53,7 @@ class Server(object):
         """run a server binding to port(default 8888)"""
 
         try:
-            self.server = MultiThreadedHTTPServer(('0.0.0.0', port), handler)
+            self.server = MultiThreadedHTTPServer(('0.0.0.0', port), Handler)
         except socket.error, e:  # failed to bind port
             logger.error(str(e))
             sys.exit(1)
