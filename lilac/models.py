@@ -98,11 +98,11 @@ class Post(object):
 
     def __getattr__(self, key):
         if key == "summary":  # if no summary defined in post's header return the first 200 char
-            return self.slice(0, 255)
+            return self.slice(0, 200)
         else:
             raise AttributeError
 
-    def slice(self, start=0, end=255):
+    def slice(self, start=0, end=200):
         """render post's body's some slice to html, and return it"""
         from .parser import parser
         return parser.markdown.render(self.markdown[start:end])
