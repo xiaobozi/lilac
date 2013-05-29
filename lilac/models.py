@@ -96,11 +96,17 @@ class Post(object):
         from .parser import parser
         return parser.markdown.render(self.markdown)
 
-    @property
-    def summary(self):
-        """Return post's body's first 255 char's html"""
+    def __getattr__(self, key):
+        if key == "summary":  # if no summary defined in post's header return the first 200 char
+            return self.slice(0, 255)
+        else:
+            raise AttributeError
+
+    def slice(self, start=0, end=255):
+        """render post's body's some slice to html, and return it"""
         from .parser import parser
-        return parser.markdown.render(self.markdown[:255])
+        return parser.markdown.render(self.markdown[start:end])
+
 
     @property
     def src(self):
