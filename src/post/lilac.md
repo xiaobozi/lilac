@@ -142,6 +142,8 @@ Theme list:
 
 - [classic](https://github.com/hit9/lilac/tree/master/lilac/resources/classic)  @hit9
 
+- [less](https://github.com/hit9/lilac-theme-less) @hit9
+
 FAQ?
 -----
 

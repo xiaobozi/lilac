@@ -334,7 +334,8 @@ This is a sample post.
 &lt;p&gt;Theme list:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://github.com/hit9/lilac/tree/master/lilac/resources/classic"&gt;classic&lt;/a&gt;  @hit9&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href="https://github.com/hit9/lilac/tree/master/lilac/resources/classic"&gt;classic&lt;/a&gt;  @hit9&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;a href="https://github.com/hit9/lilac-theme-less"&gt;less&lt;/a&gt; @hit9&lt;/p&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h2&gt;FAQ?&lt;/h2&gt;
