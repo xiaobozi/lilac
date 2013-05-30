@@ -1,0 +1,3 @@
+[submodule "lilac/resources/classic"]
+	path = lilac/resources/classic
+	url = git://github.com/hit9/lilac-theme-classic.git
