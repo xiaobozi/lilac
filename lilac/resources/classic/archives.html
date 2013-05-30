@@ -5,7 +5,7 @@
   <h1 class="name">Archives</h1>
   {%for post in posts%}
   <p class="post">
-  <a href="/post/{{post.name}}.html" class="title">{{post.title}}</a>
+  <a href="{{root_path}}/post/{{post.name}}.html" class="title">{{post.title}}</a>
     <a class="date">{{post.datetime.strftime("%Y-%m-%d")}}</a>
   </p>
   {%endfor%}

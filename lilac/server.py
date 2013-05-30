@@ -97,12 +97,12 @@ class Server(object):
                     logger.info("Changes detected, start rebuilding..")
 
                     try:
-                        generator.re_generate()
+                        generator.re_generate(localhost=True)
+                        logger.success("Rebuild success")
                     except SystemExit:  # catch sys.exit, it means fatal error
                         logger.error("Error occurred, server shut down")
                         self.shutdown_server()
 
-                    logger.success("Rebuild success")
                     self.files_stat = files_stat  # update files' stat
         except KeyboardInterrupt:
             # I dont know,  but this exception won't be catched

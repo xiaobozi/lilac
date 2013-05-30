@@ -84,7 +84,7 @@ Commands:
     elif arguments["clean"]:
         clean()
     elif arguments["build"]:
-        generator.generate()
+        generator.generate(localhost=False)  # be honest to config.toml
     elif arguments["serve"]:
 
         port_s = arguments["<port>"]

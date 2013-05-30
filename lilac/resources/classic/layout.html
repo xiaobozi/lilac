@@ -3,17 +3,17 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <title>{% block title %}{% endblock %}</title>
-    <link rel="stylesheet" href="/{{blog.theme}}/static/css/layout.css" type="text/css" />
-    <link rel="stylesheet" href="/{{blog.theme}}/static/css/{% block css_this_page %}{% endblock %}" type="text/css" />
+    <link rel="stylesheet" href="{{root_path}}/{{blog.theme}}/static/css/layout.css" type="text/css" />
+    <link rel="stylesheet" href="{{root_path}}/{{blog.theme}}/static/css/{% block css_this_page %}{% endblock %}" type="text/css" />
   </head>
   <body>
     <!-- 960px width container -->
     <div class="container">
       <!-- header -->
       <div class="header">
-        <h1><a href="/">{{ blog.name }}</a></h1>
+        <h1><a href="{{root_path}}/">{{ blog.name }}</a></h1>
         <h2>{{ blog.description}}</h2>
-        <div class="separator nav"><span><a href="/">Home</a> * <a href="/tags.html">Tags</a> * <a href="/archives.html">Archives</a> * <a href="/about.html">About</a> * <a href="/feed.atom">Rss</a> </span></div>
+        <div class="separator nav"><span><a href="{{root_path}}/">Home</a> * <a href="{{root_path}}/tags.html">Tags</a> * <a href="{{root_path}}/archives.html">Archives</a> * <a href="{{root_path}}/about.html">About</a> * <a href="{{root_path}}/feed.atom">Rss</a> </span></div>
         <p class="flourish"><img src="/{{blog.theme}}/static/images/flourish.svg" height="60px" alt=""></p>
       </div>
       <div class="content">

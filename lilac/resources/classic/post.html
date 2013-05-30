@@ -7,10 +7,10 @@
 <div class="post-html">{{post.html}}</div>
 <div class="tags">
   {%for tag in post.tags%}
-  <a href="/tag/{{tag}}.html">{{tag}}</a>
+  <a href="{{root_path}}/tag/{{tag}}.html">{{tag}}</a>
   {%endfor%}
 </div>
-<p class="separator"><span class="showsource"><a href="/src/post/{{post.name}}.md">Show Source</a></span></p>
+<p class="separator"><span class="showsource"><a href="{{root_path}}/src/post/{{post.name}}.md">Show Source</a></span></p>
 <div class="cut">* * *</div>
 {# comments here#}
 <!-- Disqus Comment BEGIN -->

@@ -17,6 +17,7 @@ class Config(object):
     filepath = join(".", filename)
     # default configuration
     default = {
+        'root_path': '/',
         'blog': {
             'name': 'Blog\'s name',
             'description': 'Blog\'s description',

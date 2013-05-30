@@ -40,6 +40,7 @@ class Generator(object):
         self.feed = feed
         self.page_404 = page_404
         self.config = config.default
+        self.root_path = ''
 
     def register_signals(self):
         """Register all signals in this process"""
@@ -62,7 +63,7 @@ class Generator(object):
         return wrapper
 
     @step
-    def initialize(self):
+    def initialize(self, localhost):
         """Initialize config, blog, author, feed and jinja2 environment"""
         # read config to update the default
         try:
@@ -75,6 +76,9 @@ class Generator(object):
         # update blog and author according to configuration
         self.blog.__dict__.update(self.config['blog'])
         self.author.__dict__.update(self.config['author'])
+        # reset root_path if not in localhost
+        if not localhost:
+            self.root_path = self.config["root_path"]
         # initialize feed
         self.feed.feed = AtomFeed(
             title=self.blog.name,
@@ -85,22 +89,23 @@ class Generator(object):
         )
         # set a render
         jinja_global_data = dict(
+            root_path=self.root_path,
             blog=self.blog,
             author=self.author,
             config=self.config,
         )
         renderer.initialize(self.blog.theme, jinja_global_data)
-        logger.success("Generator initialized")
+        logger.success("Generator initialized, root_path = \"%s\"" % self.root_path)
         # send signal that generator was already initialized
         signals.initialized.send(self)
 
     # make alias to initialize
     generate = initialize
 
-    def re_generate(self):
+    def re_generate(self, localhost):
         """Reset generator's data and build"""
         self.reset()
-        self.generate()
+        self.generate(localhost)
 
     @step
     def parse_posts(self, sender):
