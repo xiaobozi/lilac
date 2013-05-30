@@ -1,3 +1,11 @@
+v0.3.2
+------
+
+- Add optional setting `root_path` to configuration, also the support for
+sub_directory
+
+- Use class theme a submodule instead of mess files
+
 v0.3.1
 ------
 
