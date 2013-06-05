@@ -8,6 +8,8 @@ User's Guide
    install
    quickstart
    config
-   commands
    post
+   themes
+   commands
    blog_structure
+   makefile
