@@ -250,4 +250,4 @@ texinfo_documents = [
 
 sys.path.append(os.path.abspath('_themes'))
 html_theme_path = ['_themes']
-html_theme = 'flask'
+html_theme = 'flask_small'

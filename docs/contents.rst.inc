@@ -8,3 +8,6 @@ User's Guide
    install
    quickstart
    config
+   commands
+   post
+   blog_structure

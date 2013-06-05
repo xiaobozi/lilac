@@ -4,7 +4,7 @@ Installation
 ============
 
 There are several ways to install lilac, but the recommended one is to install lilac
-with :ref:`Virtualenv <virtualenv-label>` .
+with :ref:`Virtualenv <virtualenv-label>`.
 
 OS Support
 ----------
