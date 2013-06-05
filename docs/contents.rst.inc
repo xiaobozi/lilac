@@ -7,3 +7,4 @@ User's Guide
    foreword
    install
    quickstart
+   config

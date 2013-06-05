@@ -10,11 +10,8 @@ Lilac - Minimal static blog generator
 
 Release v\ |version|. (:ref:`Installation <install>`)
 
-Lilac is a MIT Licensed static blog generator, written in Python.
+Lilac is a MIT Licensed static blog generator, written in Python. It's fast, simple enough and easy to use.
 
-Lilac is fast, simple enough and easy to use. The name comes from my university
-HIT_, this kind of flowers are everywhere at my school.
-
-.. _HIT: http://www.hit.edu.cn
+The codes are on github.com: `hit9/lilac.git <https://github.com/hit9/lilac>`_
 
 .. include:: contents.rst.inc
