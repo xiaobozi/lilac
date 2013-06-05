@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title type="text">Make Difference</title>
-  <id>http://hit9.org/lilac/feed.atom</id>
+  <id>http://your-blog.org/feed.atom</id>
   <updated>2013-05-27T19:27:00Z</updated>
-  <link href="http://hit9.org/lilac" />
-  <link href="http://hit9.org/lilac/feed.atom" rel="self" />
+  <link href="http://your-blog.org" />
+  <link href="http://your-blog.org/feed.atom" rel="self" />
   <author>
-    <name>hit9</name>
+    <name>me</name>
   </author>
-  <subtitle type="text">Just lilac's demo site</subtitle>
+  <subtitle type="text">Here goes your blog's description</subtitle>
   <generator>PyAtom</generator>
-  <entry xml:base="http://hit9.org/lilac/feed.atom">
+  <entry xml:base="http://your-blog.org/feed.atom">
     <title type="text">lilac theme how-to</title>
-    <id>http://hit9.org/lilac/post/theme-how-to.html</id>
+    <id>http://your-blog.org/post/theme-how-to.html</id>
     <updated>2013-05-27T19:27:00Z</updated>
-    <link href="http://hit9.org/lilac/post/theme-how-to.html" />
+    <link href="http://your-blog.org/post/theme-how-to.html" />
     <author>
-      <name>hit9</name>
+      <name>me</name>
     </author>
     <content type="html">&lt;h1&gt;Getting Start&lt;/h1&gt;
 
@@ -210,13 +210,13 @@ html      its markdown&amp;#39;s html&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Send email to me(nz2324[AT]126.com) or new an issue on github.&lt;/p&gt;
 </content>
   </entry>
-  <entry xml:base="http://hit9.org/lilac/feed.atom">
+  <entry xml:base="http://your-blog.org/feed.atom">
     <title type="text">lilac- a static blog generator that sucks less</title>
-    <id>http://hit9.org/lilac/post/lilac.html</id>
+    <id>http://your-blog.org/post/lilac.html</id>
     <updated>2013-05-25T16:15:00Z</updated>
-    <link href="http://hit9.org/lilac/post/lilac.html" />
+    <link href="http://your-blog.org/post/lilac.html" />
     <author>
-      <name>hit9</name>
+      <name>me</name>
     </author>
     <content type="html">&lt;h1&gt;lilac&lt;/h1&gt;
 
@@ -362,42 +362,26 @@ This is a sample post.
 &lt;p&gt;MIT, short and sweet.&lt;/p&gt;
 </content>
   </entry>
-  <entry xml:base="http://hit9.org/lilac/feed.atom">
+  <entry xml:base="http://your-blog.org/feed.atom">
     <title type="text">Hello World!</title>
-    <id>http://hit9.org/lilac/post/sample.html</id>
+    <id>http://your-blog.org/post/sample.html</id>
     <updated>2013-05-21T14:30:00Z</updated>
-    <link href="http://hit9.org/lilac/post/sample.html" />
+    <link href="http://your-blog.org/post/sample.html" />
     <author>
-      <name>hit9</name>
+      <name>me</name>
     </author>
-    <content type="html">&lt;p&gt;This is a sample post.&lt;/p&gt;
+    <content type="html">&lt;p&gt;Thank you for using lilac to write blog!&lt;/p&gt;
 
-&lt;hr&gt;
-
-&lt;h1&gt;H1&lt;/h1&gt;
-
-&lt;p&gt;followed by some text&lt;/p&gt;
-
-&lt;h2&gt;H2&lt;/h2&gt;
-
-&lt;p&gt;followed by some text&lt;/p&gt;
-
-&lt;h3&gt;H3&lt;/h3&gt;
-
-&lt;p&gt;followed by some text&lt;/p&gt;
-
-&lt;h4&gt;H4&lt;/h4&gt;
-
-&lt;p&gt;followed by some text&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;this_is&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
-    &lt;span class="k"&gt;print&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;some python codes&amp;quot;&lt;/span&gt;
+&lt;p&gt;This is a sample post.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span class="cp"&gt;# include &amp;lt;stdio.h&amp;gt;&lt;/span&gt;
+&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="nf"&gt;main&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;int&lt;/span&gt; &lt;span class="n"&gt;argc&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;const&lt;/span&gt; &lt;span class="kt"&gt;char&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="n"&gt;argv&lt;/span&gt;&lt;span class="p"&gt;[])&lt;/span&gt;
+&lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;printf&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;Hello world!&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
-&lt;blockquote&gt;
-&lt;p&gt;here is blockquote&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;&lt;a href="http://autolink.com"&gt;http://autolink.com&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Any issues? Please go to &lt;a href="https://github.com/hit9/lilac/issues"&gt;https://github.com/hit9/lilac/issues&lt;/a&gt; to let &lt;a href="mailto:nz2324@126.com"&gt;me&lt;/a&gt; know.&lt;/p&gt;
 </content>
   </entry>
 </feed>
