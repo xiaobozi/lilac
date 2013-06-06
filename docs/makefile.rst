@@ -8,12 +8,12 @@ on its usage:
 
 Start blogging(start server and auto rebuild)::
 
-    make serve
+    $ make serve
 
 Build blog::
 
-    make build
+    $ make build
 
 Clean htmls::
 
-    make clean
+    $ make clean

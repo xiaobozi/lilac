@@ -23,6 +23,8 @@ There are only a few items to configure. A minimal configuration is::
     [disqus]
     shortname = "your-disqus-short-name"
 
+.. _root_path:
+
 Root Path
 ---------
 

@@ -20,6 +20,11 @@ A sample post is::
     
     # Here is markdown content
 
+Post's Filename Extension
+-------------------------
+
+Post's filename extension should be ".md", for example, "my-post.md".
+
 Post's Header
 -------------
 

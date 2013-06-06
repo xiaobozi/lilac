@@ -13,3 +13,5 @@ User's Guide
    commands
    blog_structure
    makefile
+   cases
+   contribute
