@@ -28,7 +28,7 @@ def task(task_func):
 @task
 def deploy():
     """deploy blog: classic/, src/post/, config.toml, Makefile"""
-    lib_dir = dirname(__file__)  # this library's directroy
+    lib_dir = dirname(__file__)  # this library's directory
     res = join(lib_dir, "resources")
     call("rsync -aqu " + join(res, "*") + " .", shell=True)
     logger.success("deploy done")
@@ -72,7 +72,7 @@ Options:
   <port>        which port for server to use(default: 8888)
 
 Commands:
-  deploy        deploy blog in current directroy
+  deploy        deploy blog in current directory
   build         build source files to htmls
   clean         remove files built by lilac
   serve         start a web server, as a option, start watching"""
@@ -84,7 +84,7 @@ Commands:
     elif arguments["clean"]:
         clean()
     elif arguments["build"]:
-        generator.generate()
+        generator.generate(localhost=False)  # be honest to config.toml
     elif arguments["serve"]:
 
         port_s = arguments["<port>"]
