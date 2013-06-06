@@ -106,9 +106,9 @@ You can fire up another shell to run lilac's server:
 This command will start a web server here and tell lilac to start watch file changes - 
 once you update source files, lilac will auto rebuild the blog.
 
-See build results in action, point your browser at http://localhost:8888
+To see build results in action, point your browser at http://localhost:8888
 
-For more about building server, see `server`
+For more about building server, see command :ref:`serve <command_serve>`
 
 Writing Steps
 -------------
@@ -122,3 +122,8 @@ Each time writing a new post, you just do these steps:
 3. touch a new file under `src/post/` and then start writing.
 
 4. see results in browser after doing a save.
+
+What's Next?
+------------
+
+I think reading these will be very helpful: :ref:`Post Syntax <post>`, :ref:`Commands <commands>`, :ref:`Configuration <config>`.

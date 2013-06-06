@@ -101,3 +101,6 @@ Or, from pypi:
 .. code-block:: bash
 
     $ [sudo] pip install lilac --upgrade
+
+
+You may want to see the :ref:`Quick Start <quickstart>` part now.

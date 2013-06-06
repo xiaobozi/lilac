@@ -49,7 +49,7 @@ Other variables in header can be got in template::
 Post's Body
 -----------
 
-The body is in Markdown. I recommend your this link to learn markdown: https://github.com/site/markdown_cheatsheet
+The body is in Markdown. I recommend your this link to learn markdown in minutes: `Markdown CheatSheet <https://github.com/site/markdown_cheatsheet>`_.
 
 The separator
 -------------

@@ -67,6 +67,8 @@ This command is equivalent to:
 
     $ rm -rf post page tag 404.html about.html archives.html feed.atom index.html tags.html
 
+.. _command_serve:
+
 Serve
 -----
 
