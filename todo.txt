@@ -7,3 +7,4 @@ lilac
 - [x] intsall command now pip install -e "git+git://github.com/hit9/lilac.git@dev#egg=lilac" --upgrade
 -     add zh-docs
 -     readme
+-     doc for theme dev

@@ -116,12 +116,12 @@ Have you made one? Please send a pull request on lila's repo, append yours to th
 Documents
 ---------
 
-- English version: https://lilac.readthedocs.org/en
+- English version: https://lilac.readthedocs.org/
 
 
 Help Us
 -------
 
 Found a bug? Have a good idea for improving Lilac?
-You can fork lilac's repo and then send a feature pull request, or you can open a new issue to
-report bugs, that will help all users. Welcome for your feedback.
+You can fork lilac's repo and then send a feature pull request, or you can open a new
+[issue](https://github.com/hit9/lilac/issues) to report bugs, that will help all users. Welcome for your feedback.
