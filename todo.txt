@@ -4,4 +4,7 @@ lilac
 - [x] add about and config.toml to watch
 - [x] need to init about,blog and author in models?
 - [x] exception capture for port
--     intsall command now pip install -e "git+git://github.com/hit9/lilac.git@dev#egg=lilac" --upgrade
+- [x] intsall command now pip install -e "git+git://github.com/hit9/lilac.git@dev#egg=lilac" --upgrade
+-     add zh-docs
+-     readme
+-     doc for theme dev

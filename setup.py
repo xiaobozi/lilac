@@ -6,7 +6,7 @@ setup(
     version=version,
     author='hit9',
     author_email='nz2324@126.com',
-    description='A static blog generator.',
+    description='Minimal static blog generator.',
     license='MIT',
     keywords='static blog generator, markdown, toml, posts',
     url='http://github.com/hit9/lilac',
