@@ -88,7 +88,7 @@ You can tell lilac which port to use(the default port is 8888):
 
 To watch source changes the same time when the cute web server running:
 
-    $ lilac --watch
+    $ lilac serve --watch
 
 When you save your writings, lilac can detect the changes and start rebuilding.
 
