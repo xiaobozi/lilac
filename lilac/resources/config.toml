@@ -5,7 +5,7 @@
 # the server's root-path. if you are deploying this site to a
 # sub_directory, you must set it. For instance, your blog will
 # be hosted on 'http://some-domain.com/blog', you have to set 
-# root_path="blog", else, if you are deploying this site right
+# root_path="/blog", else, if you are deploying this site right
 # under the server(even a sub_domain), do nothing, just leave
 # here blank: "". But, note that when in localhost, your site
 # will run from root regadless of 'root_path', so you must run

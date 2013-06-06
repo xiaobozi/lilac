@@ -38,9 +38,9 @@ you need to configure this item. For instance, your blog are deployed here:
 
     http://my-server.com/myblog/
 
-you should set `root_path` to `"myblog"`::
+you should set `root_path` to `"/myblog"`::
 
-    root_path = "myblog"
+    root_path = "/myblog"
 
 
 But note that: when in localhost, your site will run regardless of `root_path`,
