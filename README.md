@@ -5,6 +5,8 @@ Lilac is a MIT Licensed static blog generator, written in Python. It's fast, sim
 
 Documentation is already on https://lilac.readthedocs.org/
 
+**Lilac may not be stable since the v1.0 hasn't come.** 
+
 Features
 --------
 
