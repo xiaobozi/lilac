@@ -118,6 +118,7 @@ Documents
 
 - English version: https://lilac.readthedocs.org/
 
+- 简体中文版本: https://lilac-zh.readthedocs.org
 
 Help Us
 -------
