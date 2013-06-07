@@ -5,6 +5,7 @@ lilac
 - [x] need to init about,blog and author in models?
 - [x] exception capture for port
 - [x] intsall command now pip install -e "git+git://github.com/hit9/lilac.git@dev#egg=lilac" --upgrade
--     add zh-docs
--     readme
+- [x] add zh-docs
+- [x] readme
 -     doc for theme dev
+-     use mdconf for header?
