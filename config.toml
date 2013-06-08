@@ -21,14 +21,14 @@ description = "Here goes your blog's description"
 
 # your blog's url(ends without '/'). This url is will only used
 # in feed generation. If you don't have one,  leave here blank.
-url = "http://your-blog.org"
+url = "http://lilac.hit9.org"
 
 # which theme to use?
 theme = "classic"
 
 [author]
-name = "me"  # better be your github's username
-email = "me@some.com"  # your email address
+name = "hit9"  # better be your github's username
+email = "nz2324@126.com"  # your email address
 
 [disqus]
 # your disqus's short name for this blog

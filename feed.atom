@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title type="text">Make Difference</title>
-  <id>http://your-blog.org/feed.atom</id>
+  <id>http://lilac.hit9.org/feed.atom</id>
   <updated>2013-05-27T19:27:00Z</updated>
-  <link href="http://your-blog.org" />
-  <link href="http://your-blog.org/feed.atom" rel="self" />
+  <link href="http://lilac.hit9.org" />
+  <link href="http://lilac.hit9.org/feed.atom" rel="self" />
   <author>
-    <name>me</name>
+    <name>hit9</name>
   </author>
   <subtitle type="text">Here goes your blog's description</subtitle>
   <generator>PyAtom</generator>
-  <entry xml:base="http://your-blog.org/feed.atom">
+  <entry xml:base="http://lilac.hit9.org/feed.atom">
     <title type="text">lilac theme how-to</title>
-    <id>http://your-blog.org/post/theme-how-to.html</id>
+    <id>http://lilac.hit9.org/post/theme-how-to.html</id>
     <updated>2013-05-27T19:27:00Z</updated>
-    <link href="http://your-blog.org/post/theme-how-to.html" />
+    <link href="http://lilac.hit9.org/post/theme-how-to.html" />
     <author>
-      <name>me</name>
+      <name>hit9</name>
     </author>
     <content type="html">&lt;h1&gt;Getting Start&lt;/h1&gt;
 
@@ -210,13 +210,13 @@ html      its markdown&amp;#39;s html&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;Send email to me(nz2324[AT]126.com) or new an issue on github.&lt;/p&gt;
 </content>
   </entry>
-  <entry xml:base="http://your-blog.org/feed.atom">
+  <entry xml:base="http://lilac.hit9.org/feed.atom">
     <title type="text">Hello World!</title>
-    <id>http://your-blog.org/post/sample.html</id>
+    <id>http://lilac.hit9.org/post/sample.html</id>
     <updated>2013-05-21T14:30:00Z</updated>
-    <link href="http://your-blog.org/post/sample.html" />
+    <link href="http://lilac.hit9.org/post/sample.html" />
     <author>
-      <name>me</name>
+      <name>hit9</name>
     </author>
     <content type="html">&lt;p&gt;Thank you for using lilac to write blog!&lt;/p&gt;
 
