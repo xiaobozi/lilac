@@ -51,6 +51,9 @@ The configuration is dead minimal, let's take a look at the `config.toml`::
     
     [disqus]
     shortname = "your-disqus-short-name"
+
+    [theme.vars]
+    github = "your-github-username"
     
 The configuration is in `TOML <https://github.com/mojombo/toml>`_, but you really needn't to
 learn this language, it is obvious and simple.

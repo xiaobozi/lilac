@@ -66,3 +66,11 @@ Follow this link to `register your blog to disqus.com <https://disqus.com/admin/
 
     [disqus]
     shortname = "your-short-name-from-disqus.com"
+
+Theme Vars
+----------
+
+This section configure your theme. We configure theme's variables in config.toml instead of
+`your_theme/theme.toml` so that we can use theme as a standalone repo(or submodule).
+
+What to configure depends on your theme.
