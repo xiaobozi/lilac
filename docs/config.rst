@@ -54,7 +54,6 @@ It's easy enough to configure these by yourself.
 Notes you need to know:
 
 - the item `url` in section `blog` is only used in feed generation.
-- better to set `author` 's `name` to your GitHub's username.
 - better to set `author` 's `email` to your Gravatar's email.
 
 Disqus
