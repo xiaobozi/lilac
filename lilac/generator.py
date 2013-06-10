@@ -11,9 +11,11 @@ from .exceptions import *
 from .logger import logger, logging
 from .utils import chunks, update_nested_dict, mkdir_p, join
 from .models import Post, Tag, Page
-from .models import blog, author, about, tags, archives, feed, page_404
+from .models import blog, author, about, tags, archives, feed, page_404, charset
 
 import sys
+import toml
+from os.path import exists
 from datetime import datetime
 from pyatom import AtomFeed
 
@@ -41,6 +43,7 @@ class Generator(object):
         self.page_404 = page_404
         self.config = config.default
         self.root_path = ''
+        self.theme = {}
 
     def register_signals(self):
         """Register all signals in this process"""
@@ -87,14 +90,29 @@ class Generator(object):
             url=self.blog.url,
             author=self.author.name
         )
+        #
+        # -------- initialize jinja2 --
+        #
+        # detect if there is a theme.toml
+        theme_toml = join(self.blog.theme, "theme.toml")
+
+        if exists(theme_toml):
+            self.theme = toml.loads(open(theme_toml).read().decode(charset))
+        # update theme_conf with config's theme section
+        # user's configuation can reset theme's configuation
+        config_theme_section = self.config.get("theme", {})
+        update_nested_dict(self.theme, config_theme_section)
+
+        # get templates directory
+        templates = join(self.blog.theme, "templates")
         # set a render
         jinja_global_data = dict(
             root_path=self.root_path,
             blog=self.blog,
             author=self.author,
             config=self.config,
+            theme=self.theme
         )
-        templates = join(self.blog.theme, "templates")
         renderer.initialize(templates, jinja_global_data)
         logger.success("Generator initialized, root_path = \"%s\"" % self.root_path)
         # send signal that generator was already initialized
@@ -158,7 +176,12 @@ class Generator(object):
     @step
     def compose_pages(self, sender):
         """Compose pages from posts"""
-        groups = chunks(self.posts, 7)  # 7 posts per page
+        # Actually I don't want to put this as a configuation item
+        # but some themes need this, so lilac gets it from theme's conf,
+        # by default: 7
+        posts_count_per_page = self.theme.get("posts_count_per_page", 7)
+
+        groups = chunks(self.posts, posts_count_per_page)  # 7 posts per page
 
         for index, group in enumerate(groups):
             self.pages.append(Page(number=index+1, posts=list(group)))
