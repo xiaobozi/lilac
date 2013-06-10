@@ -39,7 +39,7 @@
 
 """global vars"""
 
-version = "0.3.4"
+version = "0.3.5"
 charset = "utf8"  # utf8 read and write everywhere
 src_ext = ".md"   # source filename extension
 out_ext = ".html" # output filename extension

@@ -1,3 +1,9 @@
+v0.3.5
+-------
+
+- separate templates to directory "templates"
+- add attribute `next`, `prev` to instance `post` and `page`
+
 v0.3.4
 ------
 

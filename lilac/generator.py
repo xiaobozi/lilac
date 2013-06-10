@@ -9,7 +9,7 @@ from .parser import parser
 from .renderer import renderer
 from .exceptions import *
 from .logger import logger, logging
-from .utils import chunks, update_nested_dict, mkdir_p
+from .utils import chunks, update_nested_dict, mkdir_p, join
 from .models import Post, Tag, Page
 from .models import blog, author, about, tags, archives, feed, page_404
 
@@ -94,7 +94,8 @@ class Generator(object):
             author=self.author,
             config=self.config,
         )
-        renderer.initialize(self.blog.theme, jinja_global_data)
+        templates = join(self.blog.theme, "templates")
+        renderer.initialize(templates, jinja_global_data)
         logger.success("Generator initialized, root_path = \"%s\"" % self.root_path)
         # send signal that generator was already initialized
         signals.initialized.send(self)
