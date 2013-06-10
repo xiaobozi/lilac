@@ -27,7 +27,7 @@ url = "http://your-domain.org"
 theme = "classic"
 
 [author]
-name = "me"  # better be your github's username
+name = "me"
 email = "me@some.com"  # your email address
 
 [disqus]
