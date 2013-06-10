@@ -35,3 +35,5 @@ email = "me@some.com"  # your email address
 shortname = "your-disqus-short-name"
 
 [theme]  # you can reset theme's default configuration here
+
+github = "hit9"  # classic theme requires your github username
