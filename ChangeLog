@@ -2,7 +2,9 @@ v0.3.5
 -------
 
 - separate templates to directory "templates"
-- add attribute `next`, `prev` to instance `post` and `page`
+- add an optional configuation file `theme.toml` to theme
+- add an optional configuation section to `config.toml`, prior to theme's
+`theme.toml`
 
 v0.3.4
 ------
