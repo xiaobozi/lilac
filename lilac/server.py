@@ -50,7 +50,7 @@ class Server(object):
         # this tell thread to terminate when the main process ends
         self.watcher.daemon = True
 
-        logger.setLevel(logging.INFO)
+        # logger.setLevel(logging.INFO)
 
     def run_server(self, port=8888):
         """run a server binding to port(default 8888)"""

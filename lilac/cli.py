@@ -17,8 +17,6 @@ from docopt import docopt
 
 def task(task_func):
     def wrapper(*args, **kwargs):
-        # set logger's level to info
-        logger.setLevel(logging.INFO)
         if task_func.__doc__:
             logger.info(task_func.__doc__)
         return task_func(*args, **kwargs)
@@ -78,6 +76,8 @@ Commands:
   serve         start a web server, as a option, start watching"""
 
     arguments = docopt(main.__doc__, version='lilac version: ' + version)
+    # set logger's level to info
+    logger.setLevel(logging.INFO)
 
     if arguments["deploy"]:
         deploy()
