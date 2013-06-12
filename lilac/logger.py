@@ -5,6 +5,7 @@
 from utils import colored
 
 import logging
+import sys
 from logging import Formatter
 from logging import getLogger
 from logging import StreamHandler
@@ -34,7 +35,7 @@ class ColoredFormatter(Formatter):
 
 logger = getLogger('lilac')
 # add colored handler
-handler = StreamHandler()
+handler = StreamHandler(sys.stdout)
 formatter = ColoredFormatter()
 handler.setFormatter(formatter)
 logger.addHandler(handler)
