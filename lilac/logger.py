@@ -34,16 +34,17 @@ class ColoredFormatter(Formatter):
 
 
 logger = getLogger('lilac')
-# add colored handler
-handler = StreamHandler(sys.stdout)
-formatter = ColoredFormatter()
-handler.setFormatter(formatter)
-logger.addHandler(handler)
 
 # add level 'success'
 logging.SUCCESS = 25  # 25 is between WARNING(30) and INFO(20)
 logging.addLevelName(logging.SUCCESS, 'SUCCESS')
 logger.success = lambda msg, *args: logger._log(logging.SUCCESS, msg, args)
+
+# add colored handler
+handler = StreamHandler(sys.stdout)
+formatter = ColoredFormatter()
+handler.setFormatter(formatter)
+logger.addHandler(handler)
 
 
 if __name__ == '__main__':
