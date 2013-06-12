@@ -38,7 +38,11 @@ logger = getLogger('lilac')
 # add level 'success'
 logging.SUCCESS = 25  # 25 is between WARNING(30) and INFO(20)
 logging.addLevelName(logging.SUCCESS, 'SUCCESS')
-logger.success = lambda msg, *args: logger._log(logging.SUCCESS, msg, args)
+
+# stackoverflow told me to use method `_log`,  but the `log` is better
+# because, `log` check its level's enablity
+
+logger.success = lambda msg, *args, **kwargs: logger.log(logging.SUCCESS, msg, *args, **kwargs)
 
 # add colored handler
 handler = StreamHandler(sys.stdout)
